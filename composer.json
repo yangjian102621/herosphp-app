@@ -1,0 +1,36 @@
+{
+    "name": "herosphp/app",
+    "description": "herosphp basic demo web appliaction",
+    "type": "app",
+    "keywords": ["php framework","herosphp"],
+    "homepage": "https://github.com/yangjian102621/herosphp",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "blackfox",
+            "email": "yangjian102621@gmail.com"
+        }
+    ],
+    "require": {
+        "phpframework/herosphp": "dev-master"
+    },
+
+    "autoload": {
+        "files": [
+            "app/functions.php"
+        ],
+        "psr-4": {
+            "app\\" : "app/modules",
+            "client\\" : "app/client"
+        }
+    },
+
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    },
+
+    "minimum-stability": "dev"
+}

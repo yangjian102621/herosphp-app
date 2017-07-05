@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+/**
+ * artisan入口程序
+ * @author yangjian
+ * @email yangjian102621@gmail.com
+ * @date 2017-03-16
+ */
+require_once __DIR__."/server.php";
+\herosphp\BootStrap::artisan();
+
