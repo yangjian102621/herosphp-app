@@ -26,9 +26,7 @@ $config = array(
      */
     'temp_rules' => array(),
 
-    'site_url' => 'http://www.herosphp.my',     //网站地址
-    'domain' => 'http://www.herosphp.my',     //网站域名
-    'res_url' => 'http://www.herosphp.my',      //静态资源的服务器地址(css, image)
+    'host' => $_SERVER['HTTP_HOST'],     //网站主机名
     //默认访问的页面
     'default_url' => array(
         'module' => 'demo',
@@ -47,6 +45,9 @@ $config = array(
     //以上都框架内置的配置变量，请不要删除，下面是用户自定义的变量可以添加或者删除
     'site_name' => 'HerosPHP 快速开发平台',
     'site_copyright' => '2016 &copy; HerosPHP by BlackFox',
+
+    'rsa_private_key' => __DIR__.'/keys/rsa_private_key.pem', //ssh 私钥
+    'rsa_public_key' => __DIR__.'/keys/rsa_public_key.pem', //ssh 公钥
 
 );
 

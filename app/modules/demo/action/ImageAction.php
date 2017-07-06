@@ -2,14 +2,12 @@
 namespace app\demo\action;
 
 use herosphp\core\Controller;
-use herosphp\core\Loader;
 use herosphp\http\HttpRequest;
 use herosphp\image\Image;
 use herosphp\image\ImageThumb;
 use herosphp\image\Text;
 use herosphp\image\VerifyCode;
 use herosphp\qrcode\QRcode;
-use herosphp\string\StringUtils;
 
 /**
  * 图片测试
@@ -60,7 +58,7 @@ class ImageAction extends Controller {
     //生成验证码
     public function scode( HttpRequest $request ) {
         //画布设置
-        $config = array('x'=>10, 'y'=>30, 'w'=>120, 'h'=>50, 'f'=>22);
+        $config = array('x'=>10, 'y'=>30, 'w'=>100, 'h'=>40, 'f'=>22);
         $verify = VerifyCode::getInstance();
         $verify->configure($config)->generate(5); //产生5位字符串
         $verify->show('png');

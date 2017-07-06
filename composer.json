@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "phpframework/herosphp": "dev-master"
+        "herosphp/framework": "^v3.0.0"
     },
 
     "autoload": {
@@ -22,13 +22,6 @@
         "psr-4": {
             "app\\" : "app/modules",
             "client\\" : "app/client"
-        }
-    },
-
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
         }
     },
 

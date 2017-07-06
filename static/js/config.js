@@ -18,7 +18,6 @@
 		//模块系统的基础路径
 		base: '/res/app/static/',
 		vars: {
-			//"path":"/static/finance/js/",
 			"plugins": "js/plugins",
 			"app": "js/app",
 		},
