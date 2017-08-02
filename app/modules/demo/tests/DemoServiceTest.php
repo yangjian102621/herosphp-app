@@ -7,6 +7,8 @@
 
 namespace app\demo\tests;
 use app\demo\service\DemoService;
+use app\demo\service\UserService;
+use herosphp\core\Loader;
 use herosphp\http\HttpClient;
 
 class DemoServiceTest extends \PHPUnit_Framework_TestCase
@@ -32,11 +34,8 @@ class DemoServiceTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function httpclient() {
-
-        $result = HttpClient::delete('http://api.herosphp.my/shops/11111',
-            json_encode(array("username" => 'xxxxxx', "password" => "11111111")));
-        print_r($result);
+    public function findOne() {
+        $model = Loader::service(UserService::class);
+        print_r($model->findOne());
     }
-
 }
