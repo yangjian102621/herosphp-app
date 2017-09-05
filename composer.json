@@ -25,12 +25,5 @@
         }
     },
 
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/php/herosphp"
-        }
-    ],
-
     "minimum-stability": "dev"
 }
