@@ -19,6 +19,8 @@ use herosphp\listener\WebApplicationListenerMatcher;
       */
      public function beforeRequestInit()
      {
+         //设置跳过监听的uri, 比如登录页面，注册页面等
+        $this->skipUrl("/user/**");
          // TODO: Implement beforeRequestInit() method.
      }
 
@@ -28,7 +30,7 @@ use herosphp\listener\WebApplicationListenerMatcher;
       */
      public function beforeActionInvoke(HttpRequest $request)
      {
-
+        echo "捕获请求";
      }
 
      /**
