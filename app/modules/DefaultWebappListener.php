@@ -20,7 +20,10 @@ use herosphp\listener\WebApplicationListenerMatcher;
      public function beforeRequestInit()
      {
          //设置跳过监听的uri, 比如登录页面，注册页面等
-        $this->skipUrl("/user/**");
+         $this->skipUrl("/user/**"); //跳过用户模块下所有请求
+         $this->skipUrl("/admin/login/**"); //跳过登录控制器所有请求
+         $this->skipUrl("/admin/scode/index"); //跳过验证码请求
+
          // TODO: Implement beforeRequestInit() method.
      }
 
