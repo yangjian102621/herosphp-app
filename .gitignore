@@ -8,3 +8,6 @@ runtime
 /composer.lock
 /vendor
 static/upload
+static/nkeditor/php/files 
+static/nkeditor/php/tmp
+
