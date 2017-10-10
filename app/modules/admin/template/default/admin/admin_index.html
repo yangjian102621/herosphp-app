@@ -1,0 +1,115 @@
+{include admin.inc.header}
+
+<body>
+
+<div class="am-g tpl-g">
+    
+    {include admin.inc.top}
+    
+    
+    {include admin.inc.leftmenu}
+    
+    <!-- content goes here -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title  am-cf">{$optTitle}</div>
+    
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <a href="/admin/manager/add" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger" id="del-all" data-url="/admin/manager/deletes">
+                                        <span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="widget-body  am-fr">
+                            
+                            <div class="am-g">
+                                <form id="cList">
+                                <table width="100%" class="am-table am-table-compact am-table-hover tpl-table-black am-table-bordered" id="clist-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="list-checkbox-th">
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" data-type="icheck" id="check-all" value="0">
+                                            </label>
+                                        </th>
+                                        <th>用户名</th>
+                                        <th>姓名</th>
+                                        <th>添加时间</th>
+                                        <th>最后登录时间</th>
+                                        <th>最后登录IP</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                    <tr th:if="${list.isEmpty()}"><td class="empty-td">暂无记录.</td></tr>
+                                    
+                                    <tr class="gradeX" th:each="item : ${list}">
+                                        <td class="list-checkbox-th">
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" data-type="icheck" name="ids[]"  th:value="${item.id}">
+                                            </label>
+                                        </td>
+                                        <td th:text="${item.username}">用户名</td>
+                                        <td th:text="${item.name}">姓名</td>
+                                        <td th:text="${#dates.format(item.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
+                                        <td th:text="${#dates.format(item.lastLoginTime, 'yyyy-MM-dd HH:mm:ss')}">最后登录时间</td>
+                                        <td th:text="${item.lastLoginIp}">最后登录IP</td>
+                                        <td>
+                                            <div class="tpl-switch">
+                                                <input th:checked="${item.enable == 1}" type="checkbox" data-type="switch" data-url="/admin/manager/enable" th:data-id="${item.id}" class="ios-switch tpl-switch-btn am-margin-top-xs">
+                                                <div class="tpl-switch-btn-view"><div></div></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/manager/edit(id=${item.id})}"
+                                               class="am-btn am-btn-primary am-btn-xxs am-round"
+                                               href="javascript:;">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a th:data-url="@{/admin/manager/delete(id=${item.id})}"
+                                               href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                                </form>
+                            </div>
+                            <div class="am-g am-cf">
+                                <div class="am-fr" th:utext="${pageMenu}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="am-u-lg-12">
+                    {include admin.inc.footer}
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+{include admin.inc.res}
+<script>
+    seajs.use("admin", function (exports) {
+        
+    });
+    
+</script>
+
+</body>
+
+</html>

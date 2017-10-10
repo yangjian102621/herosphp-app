@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="admin/include :: resource-header">header goes here.</div>
+</head>
+
+<body>
+
+<div class="am-g tpl-g">
+    
+    <div th:replace="admin/include :: top">header goes here.</div>
+    
+    
+    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+    
+    <!-- content goes here -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title  am-cf" th:text="${title}"></div>
+    
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <a href="javascript:;"
+                                       class="am-btn am-btn-default am-btn-success" id="item-add"><span
+                                            class="am-icon-plus"></span> 新增</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-body  am-fr">
+                            
+                            <div class="am-g">
+                                <form id="cList">
+                                <table width="100%" class="am-table am-table-compact am-table-hover tpl-table-black am-table-bordered" id="clist-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="list-checkbox-th">
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" data-type="icheck" id="check-all" value="0">
+                                            </label>
+                                        </th>
+                                        <th>角色名称</th>
+                                        <th>添加时间</th>
+                                        <th>更新时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                    <tr th:if="${list.isEmpty()}"><td class="empty-td">暂无记录.</td></tr>
+                                    
+                                    <tr class="gradeX" th:each="item : ${list}">
+                                        <td class="list-checkbox-th">
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" data-type="icheck" name="ids[]"  th:value="${item.id}">
+                                            </label>
+                                        </td>
+                                        <td th:text="${item.name}">角色名称</td>
+                                        <td th:text="${#dates.format(item.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
+                                        <td th:text="${#dates.format(item.updatetime, 'yyyy-MM-dd HH:mm:ss')}">更新时间
+                                        </td>
+                                        <td>
+                                            <div class="tpl-switch">
+                                                <input th:checked="${item.enable == 1}" type="checkbox"
+                                                       data-type="switch"
+                                                       data-url="/admin/role/enable"
+                                                       th:data-id="${item.id}"
+                                                       class="ios-switch tpl-switch-btn am-margin-top-xs">
+                                                <div class="tpl-switch-btn-view"><div></div></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a class="am-btn am-btn-primary am-btn-xxs am-round item-edit"
+                                               th:data-id="${item.id}"
+                                               href="javascript:;">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+    
+                                            <a class="am-btn am-btn-secondary am-btn-xxs am-round permission-edit"
+                                               th:data-id="${item.id}"
+                                               href="javascript:;">
+                                                <i class="am-icon-edit"></i> 修改权限
+                                            </a>
+                                            
+                                            <a th:data-url="@{'/admin/role/delete/'+${item.id}}"
+                                               href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                                </form>
+                            </div>
+                            <div class="am-g am-cf">
+                                <div class="am-fr" th:utext="${pageMenu}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="am-u-lg-12">
+                    <div th:replace="admin/include :: footer">web page footer goes here.</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+<th:block th:replace="admin/include :: resource-footer"></th:block>
+<script type="text/html" id="role-template">
+    <form data-action="{{url}}" class="am-form" id="cAdd" data-location="reload">
+        <div class="am-form-group">
+            <label class="am-form-label">角色名称：</label>
+            <input type="text" maxlength="20" name="name" value="{{item.name}}" placeholder="请输入角色名称"
+                   required>
+        </div>
+        <input type="hidden" name="id" value="{{item.id}}">
+    </form>
+</script>
+
+<!-- 修改权限 -->
+<script type="text/html" id="permission-template">
+    <form data-action="{{url}}" class="am-form" id="permission-form" data-location="reload">
+        {{each list as plist}}
+        <div class="am-form-group">
+            <h3 style="border-bottom: 1px solid #e1e1e1; padding-bottom: 5px; margin-bottom: 5px;">
+                <label class="am-checkbox-inline am-success">
+                    <input type="checkbox" data-type="icheck" class="p-check-all am-novalidate" />
+                    <strong>{{plist.groupName}}</strong>
+                </label>
+            </h3>
+            <div class="p-container">
+                {{each plist.permissionList as p}}
+                <label class="am-checkbox-inline" style="margin-left: 0; margin-right: 10px; margin-bottom: 5px;">
+                    <input type="checkbox" name="permissions"  value="{{p.key}}" data-type="icheck"
+                           {{if selected[p.key]}}checked{{/if}}
+                    class="am-novalidate">
+                    {{p.name}}
+                </label>
+                {{/each}}
+            </div>
+        </div>
+        {{/each}}
+        
+        <input type="hidden" name="roleId" id="role-id">
+    </form>
+</script>
+
+<script>
+    seajs.use("role");
+</script>
+
+</body>
+
+</html>

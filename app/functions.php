@@ -8,3 +8,20 @@
  * ---------------------------------------------------------------------
  * Author: <yangjian102621@gmail.com>
  *-----------------------------------------------------------------------*/
+
+if (!function_exists('arrayGroup')) {
+    /**
+     * 将数组分组重新组合， 必须是 key => value 数组
+     * @param $array
+     * @param $groupKey 分组key
+     * @return array
+     */
+    function arrayGroup($array, $groupKey) {
+        $tmpArray = array();
+        foreach($array as $value) {
+            $tmpArray[$value[$groupKey]] = $value;
+        }
+
+        return $tmpArray;
+    }
+}

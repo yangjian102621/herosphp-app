@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="admin/include :: resource-header">header goes here.</div>
+</head>
+
+<body>
+
+<div class="am-g tpl-g">
+    
+    <div th:replace="admin/include :: top">header goes here.</div>
+    
+    
+    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+    
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="widget am-cf">
+                <div class="widget-body">
+                    <div class="tpl-page-state">
+                        <div class="tpl-page-state-title am-text-center tpl-error-title">404</div>
+                        <div class="tpl-error-title-info">Page Not Found</div>
+                        <div class="tpl-page-state-content tpl-error-content">
+                            
+                            <p>对不起,我们绕了地球一圈，没有找到你要页面。</p>
+                            <a href="/admin/index" class="am-btn am-btn-secondary am-radius tpl-error-btn">返回首页
+                            </a></div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+<th:block th:replace="admin/include :: resource-footer"></th:block>
+<script type="text/html" id="role-template">
+    <form data-action="{{url}}" class="am-form" id="cAdd" data-location="reload">
+        <div class="am-form-group">
+            <label class="am-form-label">角色名称：</label>
+            <input type="text" maxlength="20" name="name" value="{{item.name}}" placeholder="请输入角色名称"
+                   required>
+        </div>
+        <input type="hidden" name="id" value="{{item.id}}">
+    </form>
+</script>
+
+<!-- 修改权限 -->
+<script type="text/html" id="permission-template">
+    <form data-action="{{url}}" class="am-form" id="permission-form" data-location="reload">
+        {{each list as plist}}
+        <div class="am-form-group">
+            <h3>
+                <label class="am-checkbox-inline am-success">
+                    <input type="checkbox" data-type="icheck" class="p-check-all am-novalidate" />
+                    <strong>{{plist.groupName}}</strong>
+                </label>
+            </h3>
+            <div class="p-container">
+                {{each plist.permissionList as p}}
+                <label class="am-checkbox-inline">
+                    <input type="checkbox" name="permissions"  value="{{p.key}}" data-type="icheck"
+                           {{if selected[p.key]}}checked{{/if}}
+                    class="am-novalidate">
+                    {{p.name}}
+                </label>
+                {{/each}}
+            </div>
+        </div>
+        {{/each}}
+        
+        <input type="hidden" name="roleId" id="role-id">
+    </form>
+</script>
+
+<script>
+    seajs.use("role");
+</script>
+
+</body>
+
+</html>

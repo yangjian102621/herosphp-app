@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="admin/include :: resource-header">header goes here.</div>
+</head>
+
+<body>
+
+<div class="am-g tpl-g">
+    
+    <div th:replace="admin/include :: top">header goes here.</div>
+    
+    
+    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+    
+    <!-- content goes here -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title  am-cf" th:text="${title}"></div>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button id="item-add" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-body  am-fr">
+                            
+                            <div class="am-g">
+                                <form id="cList">
+                                <table width="100%" class="am-table am-table-compact am-table-hover tpl-table-black am-table-bordered" id="clist-table">
+                                    <thead>
+                                    <tr>
+                                        <th>菜单名称</th>
+                                        <th>菜单URL</th>
+                                        <th>菜单权限</th>
+                                        <th>是否启用</th>
+                                        <th>排序</th>
+                                        <th>添加时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                    <tr th:if="${list.isEmpty()}"><td class="empty-td">暂无记录.</td></tr>
+                                    
+                                    <div th:each="item : ${list}">
+                                        <tr class="gradeX">
+                                            <td th:text="${item.name}">菜单名称</td>
+                                            <td th:text="${item.url}">URL</td>
+                                            <td><!--菜单权限--></td>
+                                            <td>
+                                                <div class="tpl-switch">
+                                                    <input th:checked="${item.enable == 1}" type="checkbox" data-type="switch"
+                                                           data-url="/admin/menu/enable"
+                                                           th:data-id="${item.id}"
+                                                           class="ios-switch tpl-switch-btn am-margin-top-xs">
+                                                    <div class="tpl-switch-btn-view"><div></div></div>
+                                                </div>
+                                            </td>
+                                            <td th:text="${item.sort}">排序</td>
+                                            <td th:text="${#dates.format(item.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
+                                            <td>
+                                                <a href="javascript:;" th:data-id="${item.id}"
+                                                   class="am-btn am-btn-primary am-btn-xxs am-round item-edit">
+                                                    <i class="am-icon-pencil"></i> 编辑
+                                                </a>
+    
+                                                <a href="javascript:;" th:data-id="${item.id}"
+                                                   class="am-btn am-btn-secondary am-btn-xxs am-round add-sub-item">
+                                                    <i class="am-icon-plus"></i> 添加子菜单
+                                                </a>
+                                                
+                                                <a th:data-url="@{'/admin/menu/delete/'+${item.id}}"
+                                                   href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
+                                                    <i class="am-icon-trash"></i> 删除
+                                                </a>
+                                            </td>
+                                        </tr>
+    
+                                        <tr class="gradeX" th:each="sub : ${item.subMenus}">
+                                            <td th:text="${'|-- '+sub.name}">菜单名称</td>
+                                            <td th:text="${sub.url}">URL</td>
+                                            <td th:text="${sub.permission}">菜单权限</td>
+                                            <td>
+                                                <div class="tpl-switch">
+                                                    <input th:checked="${sub.enable == 1}" type="checkbox" data-type="switch"
+                                                           data-url="/admin/menu/enable"
+                                                           th:data-id="${sub.id}"
+                                                           class="ios-switch tpl-switch-btn am-margin-top-xs">
+                                                    <div class="tpl-switch-btn-view"><div></div></div>
+                                                </div>
+                                            </td>
+                                            <td th:text="${sub.sort}">排序</td>
+                                            <td th:text="${#dates.format(sub.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
+                                            <td>
+                                                <a href="javascript:;" th:data-id="${sub.id}"
+                                                   class="am-btn am-btn-primary am-btn-xxs am-round item-edit">
+                                                    <i class="am-icon-pencil"></i> 编辑
+                                                </a>
+                                                <a th:data-url="@{'/admin/menu/delete/'+${sub.id}}"
+                                                   href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
+                                                    <i class="am-icon-trash"></i> 删除
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                                </form>
+                            </div>
+                            <div class="am-g am-cf" th:if="${pageMenu != null}">
+                                <div class="am-fr" th:utext="${pageMenu}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="am-u-lg-12">
+                    <div th:replace="admin/include :: footer">web page footer goes here.</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+<th:block th:replace="admin/include :: resource-footer"></th:block>
+
+<script type="text/html" id="role-template">
+    <form data-action="{{url}}" class="am-form" id="cAdd" data-location="reload">
+        
+        <div class="am-form-group">
+            <label class="am-form-label">上级菜单：</label>
+            <select name="pid">
+                <option value="0">顶级菜单</option>
+                <option th:each="menu : ${menus}"
+                        th:value="${menu.id}"
+                        th:text="${menu.name}">
+                </option>
+            </select>
+        </div>
+        
+        <div class="am-form-group">
+            <label class="am-form-label">菜单名称：</label>
+            <input type="text" maxlength="30" name="name" value="{{item.name}}" placeholder="请输入菜单名称"
+                   required>
+        </div>
+        
+        <div class="am-form-group">
+            <label class="am-form-label">菜单URL：</label>
+            <input type="text" name="url" value="{{item.url}}" placeholder="请输入菜单URL">
+        </div>
+    
+        <div class="am-form-group">
+            <label class="am-form-label">菜单权限标识(需要什么权限才能看到此菜单)：</label>
+            <input type="text" name="permission" value="{{item.permission}}" placeholder="请输入菜单权限标识">
+        </div>
+    
+        <div class="am-form-group">
+            <label class="am-form-label">菜单排序：</label>
+            <input type="number" name="sort" value="{{item.sort}}" placeholder="请输入菜单排序,越大越靠后"
+                   required>
+        </div>
+        
+        <input type="hidden" name="id" value="{{item.id}}">
+    </form>
+</script>
+
+<script>
+    seajs.use("menu", function (exports) {
+        
+    });
+    
+</script>
+
+</body>
+
+</html>

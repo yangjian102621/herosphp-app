@@ -1,0 +1,48 @@
+
+<!-- 菜单 -->
+<div>
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        
+        <!-- 菜单 -->
+        <ul class="sidebar-nav" id="sidebar-nav">
+    
+            <li class="sidebar-nav-link" th:each="menu : ${sysMenus}">
+                <shiro:hasAnyPermissions name="${menu.permission}">
+                    <a href="javascript:;" class="sidebar-nav-sub-title">
+                        <i class="am-icon-table sidebar-nav-link-logo"></i> <span th:text="${menu.name}">一级菜单</span>
+                        <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
+                    </a>
+                </shiro:hasAnyPermissions>
+                
+                <ul class="sidebar-nav sidebar-nav-sub">
+                    <th:block th:each="subMenu : ${menu.subMenus}">
+                        <shiro:hasPermission name="${subMenu.permission}">
+                            <li class="sidebar-nav-link">
+                                <a th:href="${subMenu.url}">
+                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> <span th:text="${subMenu.name}">二级菜单</span>
+                                </a>
+                            </li>
+                        </shiro:hasPermission>
+                    </th:block>
+                </ul>
+            </li>
+            
+        
+        </ul>
+    </div>
+</div>

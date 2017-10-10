@@ -33,7 +33,7 @@ use herosphp\listener\WebApplicationListenerMatcher;
       */
      public function beforeActionInvoke(HttpRequest $request)
      {
-        echo "捕获请求";
+        
      }
 
      /**

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<body>
+<!-- header styles and scripts -->
+<head th:fragment="resource-header">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title th:text="${title}">Amaze UI Admin index Examples</title>
+    <meta name="description" th:content="#{admin.desc}" />
+    <meta name="author" th:content="#{admin.author}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    
+    <link rel="icon" type="image/png" href="/static/admin/i/favicon.png" />
+    <link rel="apple-touch-icon-precomposed" href="/static/admin/i/app-icon72x72@2x.png" />
+    <link rel="stylesheet" href="/static/admin/css/amazeui.min.css" />
+    <link rel="stylesheet" href="/static/common/js/datepicker/amazeui.datetimepicker.min.css" />
+    <link rel="stylesheet" href="/static/common/js/chosen/amazeui.chosen.css" />
+    <link rel="stylesheet" href="/static/admin/css/app.css" />
+    <link rel="stylesheet" href="/static/admin/css/admin.css" />
+    
+    <script src="/static/common/js/jquery.min.js"></script>
+    <script src="/static/common/js/sea.min.js"></script>
+    <script src="/static/admin/js/admin-config.js"></script>
+    
+</head>
+
+<div th:fragment="resource-footer">
+    <script src="/static/admin/js/theme.js"></script>
+    <script src="/static/admin/js/amazeui.min.js"></script>
+    <script src="/static/admin/js/app.js"></script>
+    <script src="/static/common/js/jdialog/JDialog.min.js"></script>
+    
+</div>
+
+<!-- 页面顶部 -->
+<div th:fragment="top">
+    <header>
+        <div class="am-fl tpl-header-logo">
+            <a href="javascript:;"><img src="/static/admin/img/logo.png" alt="" /></a>
+        </div>
+        
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list"><span></span></div>
+            
+            <!-- 搜索 -->
+            <div class="am-fl tpl-header-search">
+                <form class="tpl-header-search-form" action="javascript:;">
+                    <button class="tpl-header-search-btn am-icon-search"></button>
+                    <input class="tpl-header-search-box" type="text" placeholder="搜索内容..." />
+                </form>
+            </div>
+            
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <li class="am-text-sm tpl-header-navbar-welcome am-dropdown " data-am-dropdown="">
+                        <a href="javascript:;" class="am-dropdown-toggle" data-am-dropdown-toggle="">
+                            欢迎你, <span th:text="${loginUser.name}">Amaze UI</span>
+                            <span class="am-icon-caret-down"></span>
+                        </a>
+                        <ul class="am-dropdown-content">
+                            <li><a href="#" id="modify-pass">
+                                <span class="am-icon-lock"></span> 修改密码</a></li>
+                            <li>
+                                <a href="/admin/logout">
+                                    <span class="am-icon-sign-out"></span> 退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 修改密码模板 -->
+                    <script type="text/html" id="modify-password-template">
+                        <form data-action="/admin/manager/modifyPass" class="am-form" id="modify-pass-form">
+        
+                            <div class="am-form-group">
+                                <label class="am-form-label">原始密码：</label>
+                                <input type="password" name="oldpass" placeholder="请输入原始密码" required>
+                            </div>
+        
+                            <div class="am-form-group">
+                                <label class="am-form-label">密码：</label>
+                                <input type="password" name="newpassword" minlength="6" maxlength="20"
+                                       id="newpassword" placeholder="请输入密码 6-20" required>
+                            </div>
+        
+                            <div class="am-form-group">
+                                <label class="am-form-label">确认密码：</label>
+                                <input type="password" name="repass" minlength="6" maxlength="20" placeholder="请输入确认密码"
+                                       data-equal-to="#newpassword" data-validation-message="请输入跟上面一致的密码" required>
+                            </div>
+    
+                        </form>
+                    </script>
+                </ul><!-- end of ul.am-fr -->
+                
+            </div>
+        </div>
+    
+    </header>
+</div>
+
+<!-- 菜单 -->
+<div th:fragment="leftmenu">
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        
+        <!-- 菜单 -->
+        <ul class="sidebar-nav" id="sidebar-nav">
+    
+            <li class="sidebar-nav-link" th:each="menu : ${sysMenus}">
+                <shiro:hasAnyPermissions name="${menu.permission}">
+                    <a href="javascript:;" class="sidebar-nav-sub-title">
+                        <i class="am-icon-table sidebar-nav-link-logo"></i> <span th:text="${menu.name}">一级菜单</span>
+                        <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
+                    </a>
+                </shiro:hasAnyPermissions>
+                
+                <ul class="sidebar-nav sidebar-nav-sub">
+                    <th:block th:each="subMenu : ${menu.subMenus}">
+                        <shiro:hasPermission name="${subMenu.permission}">
+                            <li class="sidebar-nav-link">
+                                <a th:href="${subMenu.url}">
+                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> <span th:text="${subMenu.name}">二级菜单</span>
+                                </a>
+                            </li>
+                        </shiro:hasPermission>
+                    </th:block>
+                </ul>
+            </li>
+            
+        
+        </ul>
+    </div>
+</div>
+
+<!-- 底部 -->
+<div th:fragment="footer">
+    <footer class="footer">
+        <p th:utext="#{admin.copyright}">&copy 2017 文化票号, Inc.</p>
+    </footer>
+</div>
+
+
+</body>
+
+</html>

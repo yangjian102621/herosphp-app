@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="admin/include :: resource-header">header goes here.</div>
+</head>
+
+<body>
+
+<div class="am-g tpl-g">
+    
+    <div th:replace="admin/include :: top">header goes here.</div>
+    
+    
+    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+    
+    <!-- content goes here -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title  am-cf" th:text="${title}"></div>
+    
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <a href="javascript:;"
+                                       class="am-btn am-btn-default am-btn-success" id="item-add"><span
+                                            class="am-icon-plus"></span> 新增</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-body  am-fr">
+    
+                            <div class="am-g">
+                                <div class="am-form-group">
+                                    <form class="am-form am-form-inline" id="search-box" role="form" method="get"
+                                          action="/admin/permission/index">
+                                        <div class="am-form-group">
+                                            <input type="text" name="name" class="am-input-sm"
+                                                   th:value="${param.name}" placeholder="权限名称">
+                                        </div>
+    
+                                        <div class="am-form-group">
+                                            <input type="text" name="key" class="am-input-sm"
+                                                   th:value="${param.key}" placeholder="权限标志">
+                                        </div>
+                
+                                        <div class="am-form-group">
+                                            <select name="group" class="am-input-sm"
+                                                    data-am-selected="{btnWidth:'100px',btnSize:'sm'}"
+                                                    placeholder="权限分组">
+                                                <option value=" ">全部</option>
+                                                <option
+                                                    th:each="group : ${T(com.monda.demo.enums.PermissionGroupEnum).values()}"
+                                                        th:value="${group.value}" th:text="${group.name}"
+                                                        th:selected="${param.group != null && (param.group.toString() eq group.value)}"></option>
+                                            </select>
+                                        </div>
+                
+                                        <button type="submit" class="am-btn am-btn-sm am-btn-primary">搜索</button>
+                                    </form>
+        
+                                </div>
+                            </div>
+                            
+                            <div class="am-g">
+                                <form id="cList">
+                                <table width="100%" class="am-table am-table-compact am-table-hover tpl-table-black am-table-bordered" id="clist-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="list-checkbox-th">
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" data-type="icheck" id="check-all" value="0">
+                                            </label>
+                                        </th>
+                                        <th>权限名称</th>
+                                        <th>权限分组</th>
+                                        <th>权限标识</th>
+                                        <th>添加时间</th>
+                                        <th>更新时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                    <tr th:if="${list.isEmpty()}"><td class="empty-td">暂无记录.</td></tr>
+                                    
+                                    <tr class="gradeX" th:each="item : ${list}">
+                                        <td class="list-checkbox-th">
+                                            <label class="am-checkbox-inline">
+                                                <input type="checkbox" data-type="icheck" name="ids[]"  th:value="${item.id}">
+                                            </label>
+                                        </td>
+                                        <td th:text="${item.name}">角色名称</td>
+                                        <td th:text="${item.groupName}">权限分组</td>
+                                        <td th:text="${item.key}">权限标识</td>
+                                        <td th:text="${#dates.format(item.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
+                                        <td th:text="${#dates.format(item.updatetime, 'yyyy-MM-dd HH:mm:ss')}">更新时间
+                                        </td>
+                                        <td>
+                                            <a class="am-btn am-btn-primary am-btn-xxs am-round item-edit"
+                                               th:data-id="${item.id}"
+                                               href="javascript:;">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a th:data-url="@{'/admin/permission/delete/'+${item.id}}"
+                                               href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                                </form>
+                            </div>
+                            <div class="am-g am-cf">
+                                <div class="am-fr" th:utext="${pageMenu}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="am-u-sm-12 am-cf">
+                    <div th:replace="admin/include :: footer">web page footer goes here.</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+<th:block th:replace="admin/include :: resource-footer"></th:block>
+<script type="text/html" id="role-template">
+    <form data-action="{{url}}" class="am-form" id="cAdd" data-location="reload">
+    
+        <div class="am-form-group">
+            <label class="am-form-label">权限分组：</label>
+            <select name="group">
+                <option th:each="group : ${T(com.monda.demo.enums.PermissionGroupEnum).values()}"
+                        th:value="${group.value}"
+                        th:text="${group.name}">
+                </option>
+            </select>
+        </div>
+        
+        <div class="am-form-group">
+            <label class="am-form-label">权限名称：</label>
+            <input type="text" maxlength="20" name="name" value="{{item.name}}" placeholder="请输入权限名称"
+                   required>
+        </div>
+    
+        <div class="am-form-group">
+            <label class="am-form-label">权限标识：</label>
+            <input type="text" name="key" value="{{item.key}}" placeholder="请输入权限标识"
+                   required>
+        </div>
+        <input type="hidden" name="id" value="{{item.id}}">
+    </form>
+</script>
+<script>
+    seajs.use("permission", function (exports) {
+        
+    });
+    
+</script>
+
+</body>
+
+</html>

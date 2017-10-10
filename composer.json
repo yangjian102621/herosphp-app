@@ -4,15 +4,16 @@
     "type": "app",
     "keywords": ["php framework","herosphp"],
     "homepage": "https://github.com/yangjian102621/herosphp",
-    "license": "Apache2",
+    "license": "MIT",
     "authors": [
         {
             "name": "blackfox",
             "email": "yangjian102621@gmail.com"
         }
     ],
+
     "require": {
-        "herosphp/framework": "*@dev"
+        "herosphp/framework": "dev-master"
     },
 
     "autoload": {

@@ -29,8 +29,8 @@ $config = array(
     'host' => $_SERVER['HTTP_HOST'],     //网站主机名
     //默认访问的页面
     'default_url' => array(
-        'module' => 'demo',
-        'action' => 'index',
+        'module' => 'admin',
+        'action' => 'login',
         'method' => 'index' ),
 
     'template' => 'default',    //默认模板
@@ -44,6 +44,8 @@ $config = array(
 
     //以上都框架内置的配置变量，请不要删除，下面是用户自定义的变量可以添加或者删除
     'site_name' => 'HerosPHP 快速开发平台',
+    'site_desc' => 'HerosPHP 快速开发平台',
+    'site_author' => 'yangjian102621@gmail.com',
     'site_copyright' => '2016 &copy; HerosPHP by BlackFox',
 
     'rsa_private_key' => __DIR__.'/keys/rsa_private_key.pem',
