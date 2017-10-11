@@ -45,7 +45,7 @@
 			            }
 			            //console.log(value);
 			            return $.ajax({
-				            url: $(validity.field).data("url")+value,
+				            url: $(validity.field).data("url")+"?field="+validity.field.name+"&value="+value,
 				            cache: false,
 				            dataType: 'json'
 			            }).then(function(data) {

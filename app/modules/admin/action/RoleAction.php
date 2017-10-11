@@ -1,31 +1,33 @@
 <?php
 namespace app\admin\action;
 
+use app\admin\utils\Lang;
 use herosphp\core\Loader;
 use herosphp\http\HttpRequest;
 use app\admin\service\AdminService;
 use app\admin\service\AdminRoleService;
 use herosphp\string\StringUtils;
+use herosphp\utils\JsonResult;
 
 /**
- * 管理员控制器
+ * 管理员角色控制器
  * @author  yangjian<yangjian102621@gmail.com>
  */
-class ManagerAction extends CommonAction {
+class RoleAction extends CommonAction {
 
-    protected $serviceClass = AdminService::class;
+    protected $serviceClass = AdminRoleService::class;
 
-    protected $actionTitle = "管理员";
+    protected $actionTitle = "管理员角色";
 
     /**
      * 列表
      * @param HttpRequest $request
      */
     public function index(HttpRequest $request) {
-
         parent::index($request);
-        $this->setOpt($this->actionTitle.'列表');
-        $this->setView("admin/admin_index");
+
+        $this->setOpt($this->actionTitle."列表");
+        $this->setView("role/role_index");
 
     }
 
@@ -35,10 +37,6 @@ class ManagerAction extends CommonAction {
      */
     public function add(HttpRequest $request) {
 
-        $this->setOpt($this->actionTitle.'添加');
-        $this->setView('admin/admin_add');
-
-        $this->loadRoles();
     }
 
     /**
@@ -47,14 +45,17 @@ class ManagerAction extends CommonAction {
      */
     public function edit(HttpRequest $request) {
 
-        $this->setOpt($this->actionTitle.'修改');
         parent::_edit($request);
         $item = $this->getTemplateVar('item');
-        $roleIds = StringUtils::jsonDecode($item['role_ids']);
-        $this->assign('roleIds', $roleIds);
-        $this->setView('admin/admin_edit');
+        if (empty($item)) {
+            JsonResult::fail(Lang::FETCH_FAIL);
+        } else {
+            $json = new JsonResult();
+            $json->setCode(JsonResult::CODE_SUCCESS);
+            $json->setItem($item);
+            $json->output();
+        }
 
-        $this->loadRoles();
     }
 
     /**
@@ -85,14 +86,5 @@ class ManagerAction extends CommonAction {
             $data['password'] = genPassword($password, $data['salt']);
         }
         parent::_update($data, $id);
-    }
-
-    /**
-     * 加载角色
-     */
-    protected function loadRoles() {
-        $service = Loader::service(AdminRoleService::class);
-        $roles = $service->find();
-        $this->assign('roles', $roles);
     }
 }

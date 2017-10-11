@@ -1,11 +1,13 @@
 <?php
 namespace app\admin\action;
 
+use app\admin\service\AdminMenuService;
 use app\admin\utils\Lang;
 use herosphp\core\Controller;
 use herosphp\core\Loader;
 use herosphp\core\WebApplication;
 use herosphp\http\HttpRequest;
+use herosphp\model\CommonService;
 use herosphp\utils\JsonResult;
 use herosphp\utils\Page;
 
@@ -27,7 +29,10 @@ abstract class CommonAction extends Controller {
     // 当前服务的 class path
     protected $serviceClass;
 
-    // 当前服务
+    /**
+     * 当前服务
+     * @var CommonService
+     */
     protected $service;
 
     // 操作名称
@@ -43,6 +48,9 @@ abstract class CommonAction extends Controller {
         //获取当前登陆的管理员
        // $this->loginManager =$managerService->getLoginManager();
         $this->assign('loginManager', $this->loginManager);
+
+        $this->service = Loader::service($this->serviceClass);
+
         $module = $request->getModule();
         $action = $request->getAction();
         $this->assign("index_url", "/{$module}/{$action}/index");
@@ -50,12 +58,12 @@ abstract class CommonAction extends Controller {
         $this->assign('edit_url',"/{$module}/{$action}/edit");
         $this->assign("insert_url", "/{$module}/{$action}/insert");
         $this->assign("update_url", "/{$module}/{$action}/update");
-        $this->assign('remove_url',"/{$module}/{$action}/remove");
         $this->assign('delete_url',"/{$module}/{$action}/delete");
         $this->assign('deletes_url',"/{$module}/{$action}/deletes");
         $this->assign("noRecords", Lang::NO_RECOEDS);
-        //首页
-        $this->assign('manager_index',"/admin/index/index");
+
+        //加载菜单
+        $this->loadLeftMenu();
     }
 
     /**
@@ -93,19 +101,18 @@ abstract class CommonAction extends Controller {
         $pageData = $pageHandler->getPageData(DEFAULT_PAGE_STYLE);
         //组合分页HTML代码
         if ( $pageData ) {
-            $pageMenu = '<ul class="am-pagination am-pagination-centered">';
+            $pageMenu = '<ul class="am-pagination tpl-pagination">';
             $pageMenu .= '<li><a href="'.$pageData['first'].'">首页</a></li>';
             $pageMenu .= '<li><a href="'.$pageData['prev'].'">上一页</a></li> ';
             foreach ( $pageData['list'] as $key => $value ) {
                 if ( $key == $this->page ) {
-                    $pageMenu .= '<li class="am-active"><span>'.$key.'</span></li> ';
+                    $pageMenu .= '<li class="am-active"><a href="#">'.$key.'</a></li> ';
                 } else {
                     $pageMenu .= '<li><a href="'.$value.'">'.$key.'</a></li> ';
                 }
             }
             $pageMenu .= '<li><a href="'.$pageData['next'].'">下一页</a></li> ';
             $pageMenu .= '<li><a href="'.$pageData['last'].'">末页</a></li>';
-            $pageMenu .= $this->PageInputAll();
             $pageMenu .= '<li class="am-disabled page-count">总共'.ceil($pageData['total']/$this->pageSize).'页</li>';
             $pageMenu .= '</ul>';
         }
@@ -116,7 +123,7 @@ abstract class CommonAction extends Controller {
      * @param HttpRequest $request
      * 编辑数据
      */
-    public function edit(HttpRequest $request) {
+    protected function _edit(HttpRequest $request) {
         $id = $request->getParameter('id', 'trim');
         if (empty($id)) {
             JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
@@ -127,47 +134,61 @@ abstract class CommonAction extends Controller {
     }
 
     /**
-     * @param HttpRequest $request
      * 添加数据
+     * @param $data
+     * @param $callback
      */
-    public function insert(HttpRequest $request) {
+    protected function _insert($data, $callback) {
 
-        $data = $request->getParameter('data');
         $data['addtime'] = date("Y-m-d H:i:s");
         $data['updatetime'] = date("Y-m-d H:i:s");
-        $error = $this->service->Filter($data);
-        if ($error){
-            JsonResult::result(JsonResult::CODE_FAIL, $error);
-        }
-        if ( $this->service->add($data)) {
+        if ($this->service->add($data)) {
+            if (is_callable($callback)) {
+                call_user_func($callback, $this->service);
+            }
             JsonResult::result(JsonResult::CODE_SUCCESS, Lang::INSERT_SUCCESS);
         } else {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::INSERT_FAIL);
+            $message = WebApplication::getInstance()->getAppError()->getMessage();
+            JsonResult::result(JsonResult::CODE_FAIL, empty($message) ? Lang::INSERT_FAIL : $message);
         }
     }
 
-
-
-
     /**
-     * @param HttpRequest $request
      * 更新数据
+     * @param array $data
+     * @param $id
+     * @param $callback
      */
-    public function update(HttpRequest $request) {
-        $id = $request->getParameter('id', 'trim');
+    protected function _update(array $data, $id, $callback) {
         if (empty($id)) {
             JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
         }
-        $data = $request->getParameter('data');
         $data['updatetime'] = date('Y-m-d H:i:s');
-        $error = $this->service->Filter($data);
-        if ($error){
-            JsonResult::result(self::CODE_FAIL,$error);
-        }
-        if ($this->service->update($data,$id)) {
+        if ($this->service->update($data, $id)) {
+            if (!is_callable($callback)) {
+                call_user_func($callback, $this->service);
+            }
             JsonResult::result(JsonResult::CODE_SUCCESS, Lang::UPDATE_SUCCESS);
         } else {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::UPDATE_FAIL);
+            $message = WebApplication::getInstance()->getAppError()->getMessage();
+            JsonResult::result(JsonResult::CODE_FAIL, empty($message) ? Lang::UPDATE_FAIL : $message);
+        }
+    }
+
+    /**
+     * 启用|禁用 操作
+     * @param HttpRequest $request
+     */
+    public function enable(HttpRequest $request) {
+        $id = $request->getParameter('id', 'trim');
+        $enable = $request->getParameter('enable');
+        if (empty($id)) {
+            JsonResult::fail(Lang::OPT_FAIL);
+        }
+        if ($this->service->set('enable', $enable, $id)) {
+            JsonResult::success(Lang::OPT_SUCCESS);
+        } else {
+            JsonResult::fail(Lang::OPT_FAIL);
         }
     }
 
@@ -202,13 +223,9 @@ abstract class CommonAction extends Controller {
      * 设置最大的菜单200条
      */
     protected function loadLeftMenu() {
-        $service = Loader::service(ManagerMenuDao::class);
-        $menuData = $service->order('sort_num asc')
-            ->where('enable',1)
-            ->offset(0,200)
-            ->find();
-        $menus = arrayGroup($menuData, 'pid');
-        $this->assign('menus',$menus);
+        $service = Loader::service(AdminMenuService::class);
+        $items = $service->getMenuCache();
+        $this->assign('adminMenus', $items);
     }
 
 
@@ -225,6 +242,20 @@ abstract class CommonAction extends Controller {
             JsonResult::result(JsonResult::CODE_SUCCESS, Lang::DELETE_SUCCESS);
         } else {
             JsonResult::result(JsonResult::CODE_FAIL, Lang::DELETE_FAIL);
+        }
+    }
+
+    /**
+     * @param HttpRequest $request
+     */
+    public function exists(HttpRequest $request) {
+
+        $field = $request->getParameter('field', 'trim');
+        $value = $request->getParameter('value', 'trim');
+        if ($this->checkField($field, $value)) {
+            JsonResult::fail();
+        } else {
+            JsonResult::success();
         }
     }
 

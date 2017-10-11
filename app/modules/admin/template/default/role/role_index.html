@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <div th:replace="admin/include :: resource-header">header goes here.</div>
-</head>
+{include admin.inc.header}
 
 <body>
 
 <div class="am-g tpl-g">
-    
-    <div th:replace="admin/include :: top">header goes here.</div>
-    
-    
-    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+
+    {include admin.inc.top}
+
+
+    {include admin.inc.leftmenu}
     
     <!-- content goes here -->
     <div class="tpl-content-wrapper">
@@ -21,7 +16,7 @@
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title  am-cf" th:text="${title}"></div>
+                            <div class="widget-title  am-cf">{$optTitle}</div>
     
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
@@ -51,62 +46,66 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    
-                                    <tr th:if="${list.isEmpty()}"><td class="empty-td">暂无记录.</td></tr>
-                                    
-                                    <tr class="gradeX" th:each="item : ${list}">
+
+                                    {if empty($items)}
+                                    <tr><td class="empty-td">暂无记录.</td></tr>
+                                    {/if}
+
+                                    {loop $items $value}
+                                    <tr class="gradeX">
                                         <td class="list-checkbox-th">
                                             <label class="am-checkbox-inline">
-                                                <input type="checkbox" data-type="icheck" name="ids[]"  th:value="${item.id}">
+                                                <input type="checkbox" data-type="icheck" name="ids[]"  value="{$value[id]}">
                                             </label>
                                         </td>
-                                        <td th:text="${item.name}">角色名称</td>
-                                        <td th:text="${#dates.format(item.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
-                                        <td th:text="${#dates.format(item.updatetime, 'yyyy-MM-dd HH:mm:ss')}">更新时间
-                                        </td>
+                                        <td>{$value[name]}</td>
+                                        <td>{$value[addtime]}</td>
+                                        <td>{$value[updatetime]}</td>
                                         <td>
                                             <div class="tpl-switch">
-                                                <input th:checked="${item.enable == 1}" type="checkbox"
+                                                <input type="checkbox"
+                                                       {if $value[enable == 1]}checked{/if}
                                                        data-type="switch"
                                                        data-url="/admin/role/enable"
-                                                       th:data-id="${item.id}"
+                                                       data-id="{$value[id]}"
                                                        class="ios-switch tpl-switch-btn am-margin-top-xs">
                                                 <div class="tpl-switch-btn-view"><div></div></div>
                                             </div>
                                         </td>
                                         <td>
                                             <a class="am-btn am-btn-primary am-btn-xxs am-round item-edit"
-                                               th:data-id="${item.id}"
+                                               data-id="{$value[id]}"
                                                href="javascript:;">
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
     
                                             <a class="am-btn am-btn-secondary am-btn-xxs am-round permission-edit"
-                                               th:data-id="${item.id}"
+                                               data-id="{$value[id]}"
                                                href="javascript:;">
                                                 <i class="am-icon-edit"></i> 修改权限
                                             </a>
                                             
-                                            <a th:data-url="@{'/admin/role/delete/'+${item.id}}"
+                                            <a data-url="{$delete_url}?id={$value[id]}"
                                                href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
                                                 <i class="am-icon-trash"></i> 删除
                                             </a>
                                         </td>
                                     </tr>
+                                    {/loop}
                                     <!-- more data -->
                                     </tbody>
                                 </table>
                                 </form>
                             </div>
                             <div class="am-g am-cf">
-                                <div class="am-fr" th:utext="${pageMenu}"></div>
+                                <div class="am-fr">{$pageMenu}</div>
                             </div>
                         </div>
                     </div>
                 </div>
     
                 <div class="am-u-lg-12">
-                    <div th:replace="admin/include :: footer">web page footer goes here.</div>
+                    {include admin.inc.footer}
                 </div>
                 
             </div>
@@ -114,7 +113,7 @@
     </div>
     
 </div>
-<th:block th:replace="admin/include :: resource-footer"></th:block>
+{include admin.inc.res}
 <script type="text/html" id="role-template">
     <form data-action="{{url}}" class="am-form" id="cAdd" data-location="reload">
         <div class="am-form-group">

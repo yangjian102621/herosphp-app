@@ -19,9 +19,22 @@ if (!function_exists('arrayGroup')) {
     function arrayGroup($array, $groupKey) {
         $tmpArray = array();
         foreach($array as $value) {
-            $tmpArray[$value[$groupKey]] = $value;
+            $tmpArray[$value[$groupKey]][] = $value;
         }
 
         return $tmpArray;
+    }
+}
+
+if (!function_exists('genPassword')) {
+
+    /**
+     * 生成密码
+     * @param $password 密码明文
+     * @param $salt 密码盐
+     * @return string
+     */
+    function genPassword($password, $salt) {
+        return md5(md5($password.$salt));
     }
 }

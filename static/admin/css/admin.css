@@ -446,3 +446,11 @@ added by yangjan 2017-07-28
   padding:0;
   opacity: 0;
 }
+
+/* 分页 */
+.am-pagination>li {
+  float: left;
+}
+.am-pagination .page-count {
+  line-height: 30px;
+}

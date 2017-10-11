@@ -21,8 +21,6 @@
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
                                     <a href="/admin/manager/add" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
-                                    <button type="button" class="am-btn am-btn-default am-btn-danger" id="del-all" data-url="/admin/manager/deletes">
-                                        <span class="am-icon-trash-o"></span> 删除</button>
                                 </div>
                             </div>
                             
@@ -50,44 +48,52 @@
                                     </thead>
                                     <tbody>
                                     
-                                    <tr th:if="${list.isEmpty()}"><td class="empty-td">暂无记录.</td></tr>
+                                    {if empty($items)}
+                                    <tr><td class="empty-td">暂无记录.</td></tr>
+                                    {/if}
                                     
-                                    <tr class="gradeX" th:each="item : ${list}">
+                                    {loop $items $value}
+                                    <tr class="gradeX">
                                         <td class="list-checkbox-th">
                                             <label class="am-checkbox-inline">
-                                                <input type="checkbox" data-type="icheck" name="ids[]"  th:value="${item.id}">
+                                                <input type="checkbox" data-type="icheck" name="ids[]"
+                                                       value="{$value[id]}">
                                             </label>
                                         </td>
-                                        <td th:text="${item.username}">用户名</td>
-                                        <td th:text="${item.name}">姓名</td>
-                                        <td th:text="${#dates.format(item.addtime, 'yyyy-MM-dd HH:mm:ss')}">添加时间</td>
-                                        <td th:text="${#dates.format(item.lastLoginTime, 'yyyy-MM-dd HH:mm:ss')}">最后登录时间</td>
-                                        <td th:text="${item.lastLoginIp}">最后登录IP</td>
+                                        <td>{$value[username]}</td>
+                                        <td>{$value[name]}</td>
+                                        <td>{$value[addtime]}</td>
+                                        <td>{$value[last_login_time]}</td>
+                                        <td>{$value[last_login_ip]}</td>
                                         <td>
                                             <div class="tpl-switch">
-                                                <input th:checked="${item.enable == 1}" type="checkbox" data-type="switch" data-url="/admin/manager/enable" th:data-id="${item.id}" class="ios-switch tpl-switch-btn am-margin-top-xs">
+                                                <input type="checkbox" data-type="switch"
+                                                       data-url="/admin/manager/enable" data-id="{$value[id]}"
+                                                       {if $value[enable] == 1}checked{/if}
+                                                       class="ios-switch tpl-switch-btn am-margin-top-xs">
                                                 <div class="tpl-switch-btn-view"><div></div></div>
                                             </div>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/manager/edit(id=${item.id})}"
+                                            <a href="{$edit_url}?id={$value[id]}"
                                                class="am-btn am-btn-primary am-btn-xxs am-round"
                                                href="javascript:;">
                                                 <i class="am-icon-pencil"></i> 编辑
                                             </a>
-                                            <a th:data-url="@{/admin/manager/delete(id=${item.id})}"
+                                            <a data-url="{$delete_url}?id={$value[id]}"
                                                href="javascript:;" class="am-btn am-btn-danger am-btn-xxs am-round item-delete">
                                                 <i class="am-icon-trash"></i> 删除
                                             </a>
                                         </td>
                                     </tr>
+                                    {/loop}
                                     <!-- more data -->
                                     </tbody>
                                 </table>
                                 </form>
                             </div>
                             <div class="am-g am-cf">
-                                <div class="am-fr" th:utext="${pageMenu}"></div>
+                                <div class="am-fr">{$pageMenu}</div>
                             </div>
                         </div>
                     </div>

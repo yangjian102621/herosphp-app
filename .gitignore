@@ -6,7 +6,7 @@
 .sass-cache
 runtime
 /composer.lock
-/vendor
+/vendor/composer
 static/upload
 static/nkeditor/php/files 
 static/nkeditor/php/tmp

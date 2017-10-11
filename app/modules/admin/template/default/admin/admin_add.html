@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <div th:replace="admin/include :: resource-header">header goes here.</div>
-</head>
+{include admin.inc.header}
 
 <body>
 
 <div class="am-g tpl-g">
-    
-    <div th:replace="admin/include :: top">header goes here.</div>
-    
-    
-    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+
+    {include admin.inc.top}
+
+
+    {include admin.inc.leftmenu}
     
     <!-- content goes here -->
     <div class="tpl-content-wrapper">
@@ -21,16 +16,17 @@
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title  am-cf" th:text="${title}">添加数据</div>
+                            <div class="widget-title  am-cf">{$optTitle}</div>
                         </div>
                         
                         <div class="widget-body  am-fr">
                             
                             <div class="am-u-sm-12">
-                                <form data-action="/admin/manager/doAdd" class="am-form" id="cAdd" data-location="/admin/manager/index">
+                                <form data-action="{$insert_url}" class="am-form" id="cAdd"
+                                      data-location="{$index_url}">
                                     <div class="am-form-group">
                                         <label class="am-form-label">用户名：</label>
-                                        <input type="text" maxlength="20" name="username" placeholder="输入用户名 6-20"
+                                        <input type="text" maxlength="20" name="data[username]" placeholder="输入用户名 6-20"
                                                class="js-ajax-validate" data-url="/admin/manager/exists/"
                                                data-validation-message="用户名已经被注册,请更换." required>
                                     </div>
@@ -39,19 +35,20 @@
                                         <label class="am-form-label">角色：</label>
                                         <select name="rids" multiple id="chosen-select"
                                                 data-placeholder="请选择角色，可多选">
-                                            <option th:each="role : ${roles}" th:value="${role.id}"
-                                                    th:text="${role.name}"></option>
+                                            {loop $roles $value}
+                                            <option value="{$value[id]}">{$value[name]}</option>
+                                            {/loop}
                                         </select>
                                     </div>
     
                                     <div class="am-form-group">
                                         <label class="am-form-label">姓名：</label>
-                                        <input type="text" name="name" th:value="*{name}" placeholder="输入姓名" required>
+                                        <input type="text" name="data[name]" placeholder="输入姓名" required>
                                     </div>
                                     
                                     <div class="am-form-group">
                                         <label class="am-form-label">密码：</label>
-                                        <input type="password" name="password" minlength="6" maxlength="20"
+                                        <input type="password" name="data[password]" minlength="6" maxlength="20"
                                                id="password" placeholder="请输入密码 6-20" required>
                                     </div>
     
@@ -64,8 +61,10 @@
     
                                     <div class="am-form-group">
                                         <label>状态：</label>
-                                        <label class="am-radio-inline"><input type="radio" value="1" name="enable" data-type="icheck" checked> 启用</label>
-                                        <label class="am-radio-inline"><input type="radio" value="0" name="enable" data-type="icheck"> 禁用</label>
+                                        <label class="am-radio-inline"><input type="radio" value="1" name="data[enable]"
+                                                                              data-type="icheck" checked> 启用</label>
+                                        <label class="am-radio-inline"><input type="radio" value="0" name="data[enable]"
+                                                                              data-type="icheck"> 禁用</label>
                                     </div>
                                     
     
@@ -81,19 +80,20 @@
                 </div>
     
                 <div class="am-u-lg-12">
-                    <div th:replace="admin/include :: footer">web page footer goes here.</div>
+                    {include admin.inc.footer}
                 </div>
+
             </div>
         </div>
     </div>
-    
+
 </div>
-<th:block th:replace="admin/include :: resource-footer"></th:block>
+{include admin.inc.res}
 <script>
     seajs.use("admin", function (exports) {
         
     });
-    
+
 </script>
 
 </body>

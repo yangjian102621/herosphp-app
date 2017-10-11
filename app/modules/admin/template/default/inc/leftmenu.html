@@ -20,28 +20,25 @@
         
         <!-- 菜单 -->
         <ul class="sidebar-nav" id="sidebar-nav">
-    
-            <li class="sidebar-nav-link" th:each="menu : ${sysMenus}">
-                <shiro:hasAnyPermissions name="${menu.permission}">
-                    <a href="javascript:;" class="sidebar-nav-sub-title">
-                        <i class="am-icon-table sidebar-nav-link-logo"></i> <span th:text="${menu.name}">一级菜单</span>
-                        <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
-                    </a>
-                </shiro:hasAnyPermissions>
+
+            {loop $adminMenus $value}
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> <span>{$value[name]}</span>
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico sidebar-nav-sub-ico-rotate"></span>
+                </a>
                 
                 <ul class="sidebar-nav sidebar-nav-sub">
-                    <th:block th:each="subMenu : ${menu.subMenus}">
-                        <shiro:hasPermission name="${subMenu.permission}">
-                            <li class="sidebar-nav-link">
-                                <a th:href="${subMenu.url}">
-                                    <span class="am-icon-angle-right sidebar-nav-link-logo"></span> <span th:text="${subMenu.name}">二级菜单</span>
-                                </a>
-                            </li>
-                        </shiro:hasPermission>
-                    </th:block>
+                    {loop $value[subs] $val}
+                    <li class="sidebar-nav-link">
+                        <a href="{$val[url]}">
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> <span>{$val[name]}</span>
+                        </a>
+                    </li>
+                    {/loop}
                 </ul>
             </li>
-            
+            {/loop}
         
         </ul>
     </div>
