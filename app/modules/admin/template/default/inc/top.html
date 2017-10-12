@@ -22,14 +22,14 @@
                 <ul>
                     <li class="am-text-sm tpl-header-navbar-welcome am-dropdown " data-am-dropdown="">
                         <a href="javascript:;" class="am-dropdown-toggle" data-am-dropdown-toggle="">
-                            欢迎你, <span th:text="${loginUser.name}">Amaze UI</span>
+                            欢迎你, <span>{$loginUser->getName()}</span>
                             <span class="am-icon-caret-down"></span>
                         </a>
                         <ul class="am-dropdown-content">
                             <li><a href="#" id="modify-pass">
                                 <span class="am-icon-lock"></span> 修改密码</a></li>
                             <li>
-                                <a href="/admin/logout">
+                                <a href="/admin/login/logout">
                                     <span class="am-icon-sign-out"></span> 退出
                                 </a>
                             </li>
@@ -38,7 +38,8 @@
                     
                     <!-- 修改密码模板 -->
                     <script type="text/html" id="modify-password-template">
-                        <form data-action="/admin/manager/modifyPass" class="am-form" id="modify-pass-form">
+                        <form data-action="/admin/manager/modifyPass" class="am-form" id="modify-pass-form"
+                              data-location="/admin/login/index">
         
                             <div class="am-form-group">
                                 <label class="am-form-label">原始密码：</label>

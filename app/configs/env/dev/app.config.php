@@ -51,6 +51,12 @@ $config = array(
     'rsa_private_key' => __DIR__.'/keys/rsa_private_key.pem',
     'rsa_public_key' => __DIR__.'/keys/rsa_public_key.pem',
 
+    // 后台权限分组
+    'permission_group' => array(
+        'system' => '系统管理',
+        'user' => '用户管理'
+    )
+
 );
 
 return $config;

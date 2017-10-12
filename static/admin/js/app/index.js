@@ -33,7 +33,7 @@ define(function(require, exports) {
 		var loader;
 
 		$("#upload-btn").JUpload({
-			url : "/upload/putFile",
+			url : "/admin/upload",
 			src : "file",
 			maxFileNum : 5,
 			extAllow : "jpg|png|gif|jpeg",
@@ -72,11 +72,11 @@ define(function(require, exports) {
 		KindEditor.ready(function(K) {
 			K.create('textarea[name="content"]', {
 
-				uploadJson : '/upload/putFile',
-				filePostName : 'file',
-				fileManagerJson : '/upload/list',
-				imageSearchJson : '/upload/search', //图片搜索url
-				imageGrapJson : '/upload/grap', //抓取选中的搜索图片地址
+				filePostName : 'imgFile',
+				uploadJson : K.basePath+'php/qiniu/upload_json.php',
+				fileManagerJson : K.basePath+'php/qiniu/file_manager_json.php',
+				imageSearchJson : K.basePath+'php/qiniu/image_search_json.php', //图片搜索url
+				imageGrapJson : K.basePath+'php/qiniu/image_grap_json.php', //抓取选中的搜索图片地址
 				allowFileManager : true,
 				allowImageUpload : true,
 				allowMediaUpload : true,

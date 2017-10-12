@@ -6,8 +6,9 @@
     define(function(require, exports) {
     
         var template = require("template");
-        template.config("openTag", "{{");
-        template.config("closeTag", "}}");
+	    //避免跟php的标签冲突
+        template.config("openTag", "{%");
+        template.config("closeTag", "%}");
 
         //全局变量
         exports.global = {
@@ -319,7 +320,7 @@
 					options.callback(res);
 				}
 			    if (res.code == "000") {
-				    exports.okMessage(options.successMsg || "操作成功!");
+				    exports.okMessage(res.message || "操作成功!");
 				    if ( options.location == 'reload' ) {
 					    setTimeout(function () {
 						    window.location.reload();
@@ -330,7 +331,7 @@
 					    }, exports.global.timeout);
 				    }
 			    } else {
-				    exports.errorMessage(options.failMsg || res.message);
+				    exports.errorMessage(res.message);
 			    }
 
 			    if (options.btn) {

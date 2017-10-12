@@ -18,7 +18,7 @@ define(function(require, exports) {
             tempId : "role-template",
             formId : "cAdd",
             data : {
-                url : "/admin/menu/doAdd",
+                url : "/admin/menu/insert",
                 item : {}
             }
         });
@@ -27,7 +27,7 @@ define(function(require, exports) {
     //编辑菜单
     $(".item-edit").on("click", function () {
         var id = $(this).data("id");
-        $.get("/admin/menu/edit/"+id, function (res) {
+        $.get("/admin/menu/edit/?id="+id, function (res) {
             if (res.code != "000") {
                 common.errorMessage(res.message);
             } else {
@@ -36,7 +36,7 @@ define(function(require, exports) {
 		            tempId : "role-template",
 		            formId : "cAdd",
 		            data : {
-			            url : "/admin/menu/doUpdate",
+			            url : "/admin/menu/update",
                         item : res.item
 		            }
 	            });
@@ -63,12 +63,11 @@ define(function(require, exports) {
             tempId : "role-template",
             formId : "cAdd",
             data : {
-                url : "/admin/menu/doAdd",
+                url : "/admin/menu/insert",
                 item : {}
             }
         });
-
-        $('select[name="pid"] option').each(function (idx, ele) {
+        $('select[name="data[pid]"] option').each(function (idx, ele) {
             if (ele.value == pid) {
                 ele.selected = true;
             }

@@ -21,4 +21,16 @@ class Lang
     const DELETE_SUCCESS = "删除成功";
     const DELETE_FAIL = "删除失败";
 
+    const GET_PERMISSION_FAIL = "获取权限失败";
+    const SAVE_PERMISSION_SUCCESS = '更新权限成功';
+    const SAVE_PERMISSION_FAIL = '更新权限失败';
+
+    const USER_FORBID = '您的账户被禁用，请联系管理员';
+    const LOGIN_FAIL = '登录失败，用户名或者密码错误';
+    const LOGIN_SUCCESS = '登录成功';
+    const MD_PASS_SUCCESS = '密码修改成功，请重新登录';
+    const MD_PASS_FAIL = '密码修改失败';
+    const OLD_PASS_ERROR = '原始密码错误';
+
+
 }

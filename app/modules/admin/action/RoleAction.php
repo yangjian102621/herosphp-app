@@ -3,9 +3,10 @@ namespace app\admin\action;
 
 use app\admin\utils\Lang;
 use herosphp\core\Loader;
+use herosphp\core\WebApplication;
 use herosphp\http\HttpRequest;
-use app\admin\service\AdminService;
 use app\admin\service\AdminRoleService;
+use app\admin\service\AdminPermissionService;
 use herosphp\string\StringUtils;
 use herosphp\utils\JsonResult;
 
@@ -86,5 +87,52 @@ class RoleAction extends CommonAction {
             $data['password'] = genPassword($password, $data['salt']);
         }
         parent::_update($data, $id);
+    }
+
+    /**
+     * 获取权限列表
+     * @param HttpRequest $request
+     */
+    public function getPermissions(HttpRequest $request) {
+
+        $id = $request->getParameter('id', 'intval');
+        $permissionService = Loader::service(AdminPermissionService::class);
+        $permissions = $permissionService->find();
+        $permissions = arrayGroup($permissions, 'pgroup');
+        if (empty($permissions)) {
+            JsonResult::fail(Lang::GET_PERMISSION_FAIL);
+        } else {
+            //整理权限数组
+            $appConfigs = WebApplication::getInstance()->getConfigs();
+            $permissionConfigs = $appConfigs['permission_group'];
+            $items = [];
+            foreach($permissions as $key => $value) {
+                $items[$key]['groupName'] = $permissionConfigs[$key];
+                $items[$key]['permissionList'] = $value;
+            }
+            // 获取当前角色的初始化权限
+            $role = $this->service->findById($id);
+            $p = StringUtils::jsonDecode($role['permissions']);
+            $json = new JsonResult();
+            $json->setCode(JsonResult::CODE_SUCCESS);
+            $json->setItems($items);
+            $json->setItem($p);
+            $json->output();
+        }
+    }
+
+    /**
+     * 保存权限
+     * @param HttpRequest $request
+     */
+    public function savePermissions(HttpRequest $request) {
+
+        $roleId = $request->getParameter('roleId', 'intval');
+        $permissions = $request->getParameter('permissions');
+        if ($this->service->set('permissions', StringUtils::jsonEncode($permissions), $roleId)) {
+            JsonResult::success(Lang::SAVE_PERMISSION_SUCCESS);
+        } else {
+            JsonResult::fail(Lang::SAVE_PERMISSION_FAIL);
+        }
     }
 }

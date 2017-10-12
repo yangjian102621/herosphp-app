@@ -64,7 +64,7 @@
             $(this).button("loading");
             var that = this;
             
-            $.post("/admin/doLogin", {
+            $.post("/admin/login/signin", {
                 "username" : username,
                 "password" : password
             }, function (res) {
@@ -72,7 +72,7 @@
                 if (res.code == "000") {
 	                JDialog.msg({type:'ok', content:'登录成功.', offset:50});
                     setTimeout(function () {
-	                    location.href = "/admin/index";
+	                    location.href = "/admin/index/index";
                     }, 1000);
                 } else {
 	                JDialog.msg({type:'error', content:res.message, offset:50});

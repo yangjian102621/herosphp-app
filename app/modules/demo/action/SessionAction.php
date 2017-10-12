@@ -21,8 +21,7 @@ class SessionAction extends Controller {
 
         //开启session
         Session::start();
-        $_SESSION['username'] = 'xiaoyang';
-        $_SESSION['password'] = '123456';
+        Session::set('aaa', ['xxxxxx'=> 'xxxx', 'yyyyy'=> 'yyyyy']);
 
         die('设置session成功！');
 

@@ -48,7 +48,8 @@ define(function(require, exports) {
 	$(".permission-edit").on("click", function () {
 
 		var id = $(this).data("id");
-		$.get("/admin/role/permission/get/"+id, function (res) {
+		$.get("/admin/role/getPermissions?id="+id, function (res) {
+
 			if (res.code == "000") {
 				common.post({
 					title : "修改角色权限",
@@ -57,9 +58,9 @@ define(function(require, exports) {
 					tempId : "permission-template",
 					formId : "permission-form",
 					data : {
-						url : "/admin/role/permission/save",
+						url : "/admin/role/savePermissions",
 						list : res.items,
-						selected : res.item
+						selected : res.item || {}
 					}
 				});
 				$('input[data-type="icheck"]').uCheck();
@@ -77,8 +78,6 @@ define(function(require, exports) {
 				$('.p-check-all').each(function (idx, ele) {
 					var total = $(ele).closest("h3").next().find('input[data-type="icheck"]').length;
 					var checked = $(ele).closest("h3").next().find('input[data-type="icheck"]:checked').length;
-					console.log(total);
-					console.log(checked);
 					if (checked > 0 && checked == total) {
 						$(ele).uCheck('check');
 					}

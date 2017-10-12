@@ -64,12 +64,12 @@
                                         <td>
                                             <div class="tpl-switch">
                                                 <input type="checkbox"
-                                                       {if $value[enable == 1]}checked{/if}
+                                                       {if $value[enable] == 1}checked{/if}
                                                        data-type="switch"
                                                        data-url="/admin/role/enable"
                                                        data-id="{$value[id]}"
                                                        class="ios-switch tpl-switch-btn am-margin-top-xs">
-                                                <div class="tpl-switch-btn-view"><div></div></div>
+                                                <div class="tpl-switch-btn-view" title="禁用"><div></div></div>
                                             </div>
                                         </td>
                                         <td>
@@ -97,9 +97,11 @@
                                 </table>
                                 </form>
                             </div>
+
                             <div class="am-g am-cf">
                                 <div class="am-fr">{$pageMenu}</div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -115,39 +117,39 @@
 </div>
 {include admin.inc.res}
 <script type="text/html" id="role-template">
-    <form data-action="{{url}}" class="am-form" id="cAdd" data-location="reload">
+    <form data-action="{%url%}" class="am-form" id="cAdd" data-location="reload">
         <div class="am-form-group">
             <label class="am-form-label">角色名称：</label>
-            <input type="text" maxlength="20" name="name" value="{{item.name}}" placeholder="请输入角色名称"
+            <input type="text" maxlength="20" name="data[name]" value="{%item.name%}" placeholder="请输入角色名称"
                    required>
         </div>
-        <input type="hidden" name="id" value="{{item.id}}">
+        <input type="hidden" name="id" value="{%item.id%}">
     </form>
 </script>
 
 <!-- 修改权限 -->
 <script type="text/html" id="permission-template">
-    <form data-action="{{url}}" class="am-form" id="permission-form" data-location="reload">
-        {{each list as plist}}
+    <form data-action="{%url%}" class="am-form" id="permission-form" data-location="reload">
+        {%each list as plist%}
         <div class="am-form-group">
             <h3 style="border-bottom: 1px solid #e1e1e1; padding-bottom: 5px; margin-bottom: 5px;">
                 <label class="am-checkbox-inline am-success">
                     <input type="checkbox" data-type="icheck" class="p-check-all am-novalidate" />
-                    <strong>{{plist.groupName}}</strong>
+                    <strong>{%plist.groupName%}</strong>
                 </label>
             </h3>
             <div class="p-container">
-                {{each plist.permissionList as p}}
+                {%each plist.permissionList as p%}
                 <label class="am-checkbox-inline" style="margin-left: 0; margin-right: 10px; margin-bottom: 5px;">
-                    <input type="checkbox" name="permissions"  value="{{p.key}}" data-type="icheck"
-                           {{if selected[p.key]}}checked{{/if}}
+                    <input type="checkbox" name="permissions[{%p.pkey%}]"  value="1" data-type="icheck"
+                           {%if selected[p.pkey]%}checked{%/if%}
                     class="am-novalidate">
-                    {{p.name}}
+                    {%p.name%}
                 </label>
-                {{/each}}
+                {%/each%}
             </div>
         </div>
-        {{/each}}
+        {%/each%}
         
         <input type="hidden" name="roleId" id="role-id">
     </form>

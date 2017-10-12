@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <div th:replace="admin/include :: resource-header">header goes here.</div>
-</head>
+{include admin.inc.header}
 
 <body>
 
 <div class="am-g tpl-g">
-    
-    <div th:replace="admin/include :: top">header goes here.</div>
-    
-    
-    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+
+    {include admin.inc.top}
+
+
+    {include admin.inc.leftmenu}
     
     <!-- content goes here -->
     <div class="tpl-content-wrapper">
@@ -171,13 +166,14 @@
     </div>
     
 </div>
-<th:block th:replace="admin/include :: resource-footer"></th:block>
-<script src="/static/common/js/vue.js"></script>
-<script src="/static/common/js/jupload/JUpload.js"></script>
-<script src="/static/common/NKeditor/NKeditor-all-min.js"></script>
-<script th:inline="javascript">
+{include admin.inc.res}
+
+{res:js common/js/vue.js}
+{res:js common/js/jupload/JUpload.js}
+{res:js common/NKeditor/NKeditor-all-min.js}
+<script>
     seajs.use("index", function (exports) {
-        exports.upload(/*[[${imgUrls}]]*/);
+        exports.upload(['http://owxozhodg.bkt.clouddn.com/image-a0015ec2d801da0001.jpg','http://owxozhodg.bkt.clouddn.com/image-a0015ec2d803ee0001.jpg']);
         exports.editor();
     });
     

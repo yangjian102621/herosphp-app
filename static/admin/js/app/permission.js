@@ -18,7 +18,7 @@ define(function(require, exports) {
             tempId : "role-template",
             formId : "cAdd",
             data : {
-                url : "/admin/permission/doAdd",
+                url : "/admin/permission/insert",
                 item : {
 
                 }
@@ -30,7 +30,7 @@ define(function(require, exports) {
     //编辑权限
     $(".item-edit").on("click", function () {
         var id = $(this).data("id");
-        $.get("/admin/permission/edit/"+id, function (res) {
+        $.get("/admin/permission/edit/?id="+id, function (res) {
             if (res.code != "000") {
                 common.errorMessage(res.message);
             } else {
@@ -39,7 +39,7 @@ define(function(require, exports) {
 		            tempId : "role-template",
 		            formId : "cAdd",
 		            data : {
-			            url : "/admin/permission/doUpdate",
+			            url : "/admin/permission/update",
                         item : res.item
 		            }
 	            });

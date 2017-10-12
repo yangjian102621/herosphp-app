@@ -45,14 +45,11 @@
  */
 .ke-container {
   display: block;
-  border: 1px solid #e1e1e1;
-  border-radius: 6px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
   background-color: #FFF;
   overflow: hidden;
   margin: 0;
   padding: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 1px 1px rgba(0, 0, 0, 0.16);
   /**
   通用样式
    */
@@ -78,16 +75,12 @@
     color: #337FE5;
     text-decoration: none; }
   .ke-container .ke-toolbar {
-    border-bottom: 1px solid #e1e1e1;
-    background-color: #f5f5f5;
-    padding: 2px 5px;
     text-align: left;
     overflow: hidden;
-    zoom: 1; }
+    zoom: 1;
+    padding: 0px 5px; }
     .ke-container .ke-toolbar .ke-outline {
-      border: 1px solid #f5f5f5;
-      margin: 1px;
-      padding: 3px;
+      padding: 10px 5px;
       font-size: 0;
       line-height: 0;
       cursor: pointer;
@@ -101,13 +94,13 @@
         line-height: 0;
         overflow: hidden;
         display: block;
-        width: 20px;
-        height: 20px; }
+        width: 16px;
+        height: 16px;
+        margin: 0px 2px; }
     .ke-container .ke-toolbar .ke-on {
-      border: 1px solid #cccccc; }
+      background: #ebebeb; }
     .ke-container .ke-toolbar .ke-selected {
-      border: 1px solid #cccccc;
-      background-color: #e1e1e1; }
+      background-color: #ebebeb; }
     .ke-container .ke-toolbar .ke-disabled {
       cursor: default; }
     .ke-container .ke-toolbar .ke-separator {
@@ -124,9 +117,10 @@
       display: block;
       float: left; }
     .ke-container .ke-toolbar .ke-hr {
-      overflow: hidden;
+      clear: both;
       height: 1px;
-      clear: both; }
+      width: calc(100% - (2 * 2px));
+      background: #ebebeb; }
   .ke-container .ke-edit {
     padding: 0; }
     .ke-container .ke-edit .ke-edit-iframe,
@@ -151,7 +145,8 @@
     *height: 12px;
     overflow: hidden;
     text-align: center;
-    cursor: s-resize; }
+    cursor: s-resize;
+    display: none; }
     .ke-container .ke-statusbar .ke-statusbar-center-icon {
       background-position: -0px -754px;
       width: 15px;
@@ -346,14 +341,14 @@
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     border-bottom: 1px solid #c6c6c6;
-    background: transparent url(dialog-title-bg.png) repeat-x scroll 0 0;
+    background: transparent url(../common/dialog-title-bg.png) repeat-x scroll 0 0;
     position: relative;
     cursor: move; }
     .ke-dialog .ke-dialog-header .ke-dialog-icon-close {
       height: 20px;
       width: 20px;
       cursor: pointer;
-      background: url("icons-all.gif") 0 -59px;
+      background: url("../common/icons-all.gif") 0 -59px;
       position: absolute;
       right: 5px;
       top: 4px; }
@@ -545,7 +540,7 @@
       z-index: 1;
       text-align: center; }
       .ke-dialog .ke-dialog-content .ke-dialog-loading .ke-dialog-loading-content {
-        background: url("loading.gif") no-repeat;
+        background: url("../common/loading.gif") no-repeat center;
         color: #666;
         font-size: 14px;
         font-weight: bold;

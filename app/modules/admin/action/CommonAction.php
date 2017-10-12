@@ -1,7 +1,9 @@
 <?php
 namespace app\admin\action;
 
+use app\admin\model\Admin;
 use app\admin\service\AdminMenuService;
+use app\admin\service\AdminService;
 use app\admin\utils\Lang;
 use herosphp\core\Controller;
 use herosphp\core\Loader;
@@ -9,6 +11,7 @@ use herosphp\core\WebApplication;
 use herosphp\http\HttpRequest;
 use herosphp\model\CommonService;
 use herosphp\utils\JsonResult;
+use herosphp\utils\ModelTransformUtils;
 use herosphp\utils\Page;
 
 /**
@@ -21,10 +24,16 @@ abstract class CommonAction extends Controller {
     protected $page = 1;
 
     // 每页数量
-    protected $pageSize = 20;
+    protected $pageSize = 15;
 
-    // 当前登陆的管理员
-    protected $loginManager;
+    //排序方式
+    protected $order = "id DESC";
+
+    /**
+     * 当前登陆的管理员
+     * @var Admin
+     */
+    protected $loginUser;
 
     // 当前服务的 class path
     protected $serviceClass;
@@ -44,12 +53,17 @@ abstract class CommonAction extends Controller {
         $request = WebApplication::getInstance()->getHttpRequest();
 
         //获取当前登陆管理员
-       // $managerService = Loader::service(ManagerService::class);
-        //获取当前登陆的管理员
-       // $this->loginManager =$managerService->getLoginManager();
-        $this->assign('loginManager', $this->loginManager);
+        $adminService = Loader::service(AdminService::class);
+        $loginUser = $adminService->getLoginManager();
+        if (!$loginUser) {
+            location("/admin/login/index");
+        }
+        $this->loginUser = ModelTransformUtils::map2Model(Admin::class, $loginUser);
+        $this->assign('loginUser', $this->loginUser);
 
-        $this->service = Loader::service($this->serviceClass);
+        if ($this->serviceClass != null) {
+            $this->service = Loader::service($this->serviceClass);
+        }
 
         $module = $request->getModule();
         $action = $request->getAction();
@@ -80,7 +94,7 @@ abstract class CommonAction extends Controller {
         }
 
         $sqlBuilder = $this->service->getSqlBuilder();
-        $items = $this->service->page($this->getPage(), $this->getPagesize())->find();
+        $items = $this->service->page($this->getPage(), $this->getPagesize())->order($this->getOrder())->find();
         $this->service->getModelDao()->setSqlBuilder($sqlBuilder);
         $total = $this->service->setSqlBuilder($sqlBuilder)->count();
         $this->PageView($total);
@@ -143,7 +157,7 @@ abstract class CommonAction extends Controller {
         $data['addtime'] = date("Y-m-d H:i:s");
         $data['updatetime'] = date("Y-m-d H:i:s");
         if ($this->service->add($data)) {
-            if (is_callable($callback)) {
+            if (!is_null($callback)) {
                 call_user_func($callback, $this->service);
             }
             JsonResult::result(JsonResult::CODE_SUCCESS, Lang::INSERT_SUCCESS);
@@ -165,7 +179,7 @@ abstract class CommonAction extends Controller {
         }
         $data['updatetime'] = date('Y-m-d H:i:s');
         if ($this->service->update($data, $id)) {
-            if (!is_callable($callback)) {
+            if (!is_null($callback)) {
                 call_user_func($callback, $this->service);
             }
             JsonResult::result(JsonResult::CODE_SUCCESS, Lang::UPDATE_SUCCESS);
@@ -179,13 +193,18 @@ abstract class CommonAction extends Controller {
      * 启用|禁用 操作
      * @param HttpRequest $request
      */
-    public function enable(HttpRequest $request) {
+    public function enable(HttpRequest $request, $callback) {
         $id = $request->getParameter('id', 'trim');
         $enable = $request->getParameter('enable');
         if (empty($id)) {
             JsonResult::fail(Lang::OPT_FAIL);
         }
         if ($this->service->set('enable', $enable, $id)) {
+
+            if (!is_null($callback)) {
+                call_user_func($callback, $this->service);
+            }
+
             JsonResult::success(Lang::OPT_SUCCESS);
         } else {
             JsonResult::fail(Lang::OPT_FAIL);
@@ -204,13 +223,18 @@ abstract class CommonAction extends Controller {
      * 删除单条数据
      * @param HttpRequest $request
      */
-    public function delete( HttpRequest $request ) {
+    public function delete( HttpRequest $request, $callback) {
 
         $id = $request->getParameter('id', 'trim');
         if ( empty($id) ) {
             JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
         }
         if ( $this->service->delete($id) ) {
+
+            if (!is_null($callback)) {
+                call_user_func($callback, $this->service);
+            }
+
             JsonResult::result(JsonResult::CODE_SUCCESS, Lang::DELETE_SUCCESS);
         } else {
             JsonResult::result(JsonResult::CODE_FAIL, Lang::DELETE_FAIL);
@@ -306,6 +330,21 @@ abstract class CommonAction extends Controller {
         $this->pageSize = $pageSize;
     }
 
+    /**
+     * @return string
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param string $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
 
     /**
      * @return mixed

@@ -21,6 +21,7 @@ class Admin
     protected $enable; //启用状态， 0：禁用，1：启用
     protected $lastLoginIp; //最后登录 IP
     protected $lastLoginTime; //最后登录时间
+    protected $permissions; //用户权限
 
     /**
      * @return mixed
@@ -198,6 +199,29 @@ class Admin
         $this->lastLoginTime = $lastLoginTime;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
 
+    /**
+     * @param mixed $permissions
+     */
+    public function setPermissions($permissions)
+    {
+        $this->permissions = $permissions;
+    }
+
+    /**
+     * 判断某个操作是否有权限
+     * @param $opt
+     * @return bool
+     */
+    public function hasPermission($opt) {
+        return isset($this->permissions[$opt]);
+    }
 
 }

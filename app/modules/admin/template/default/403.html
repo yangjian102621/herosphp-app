@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <div th:replace="admin/include :: resource-header">header goes here.</div>
-</head>
+{include admin.inc.header}
 
 <body>
 
 <div class="am-g tpl-g">
-    
-    <div th:replace="admin/include :: top">header goes here.</div>
-    
-    
-    <div th:replace="admin/include :: leftmenu">left menu goes here</div>
+
+    {include admin.inc.top}
+
+
+    {include admin.inc.leftmenu}
     
     <!-- 内容区域 -->
     <div class="tpl-content-wrapper">
@@ -36,7 +31,11 @@
     </div>
     
 </div>
-<th:block th:replace="admin/include :: resource-footer"></th:block>
+{include admin.inc.res}
+
+<script>
+    seajs.use("common");
+</script>
 
 </body>
 

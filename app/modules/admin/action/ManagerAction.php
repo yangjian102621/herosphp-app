@@ -1,11 +1,13 @@
 <?php
 namespace app\admin\action;
 
+use app\admin\utils\Lang;
 use herosphp\core\Loader;
 use herosphp\http\HttpRequest;
 use app\admin\service\AdminService;
 use app\admin\service\AdminRoleService;
 use herosphp\string\StringUtils;
+use herosphp\utils\JsonResult;
 
 /**
  * 管理员控制器
@@ -94,5 +96,28 @@ class ManagerAction extends CommonAction {
         $service = Loader::service(AdminRoleService::class);
         $roles = $service->find();
         $this->assign('roles', $roles);
+    }
+
+    /**
+     * 修改密码
+     * @param HttpRequest $request
+     */
+    public function modifyPass(HttpRequest $request) {
+
+        $oldpass = $request->getParameter('oldpass', 'trim');
+        //验证原始密码
+        $password = genPassword($oldpass, $this->loginUser->getSalt());
+        if ($password != $this->loginUser->getPassword()) {
+            JsonResult::fail(Lang::OLD_PASS_ERROR);
+        }
+        $newpassword = $request->getParameter('newpassword','trim');
+        $password = genPassword($newpassword, $this->loginUser->getSalt());
+        if ($this->service->set('password', $password, $this->loginUser->getId())) {
+            $this->service->logout();
+            JsonResult::success(Lang::MD_PASS_SUCCESS);
+        } else {
+            JsonResult::fail(Lang::MD_PASS_FAIL);
+        }
+
     }
 }
