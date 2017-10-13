@@ -8,6 +8,8 @@ define(function(require, exports) {
     var common = require("common");
 	require("chosen");
 	require("jpreview");
+	require("datepicker");
+
     common.initForm("#cAdd", {
 	    validate: function(validity) {
 		    // if (validity.field.id == 'pic') {
@@ -28,6 +30,26 @@ define(function(require, exports) {
 		max_selected_options: 3
 	});
 
+	// 日期选择控件
+	$('#date').datetimepicker({
+		format: 'yyyy-mm-dd',
+		//startDate : new Date(),
+		minView : 2,
+		todayBtn : true,
+		autoclose : true
+	});
+
+	$("#time").datetimepicker({
+		format: 'yyyy-mm-dd hh:ii',
+		startDate : new Date(),
+		minView : 0,
+		autoclose : true
+	});
+
+	/**
+	 * 图片上传
+	 * @param data
+	 */
 	exports.upload = function (data) {
 
 		var loader;
@@ -55,6 +77,7 @@ define(function(require, exports) {
 			onSuccess : function(data) {
 				$('#cover').val(data);
 				JDialog.msg({type:"ok", content:"上传成功。", timer:2000});
+				$(".img-wrapper img").jpreview();
 			},
 			onRemove : function(data) {
 				$('#cover').val("");

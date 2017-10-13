@@ -12,9 +12,9 @@ error_reporting(0);
 use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
 
-require_once "vendor/autoload.php";
-require_once "../JsonResult.php";
 require_once "config.php";
+require_once "../JsonResult.php";
+
 
 $fileType = trim($_GET['fileType']);
 if (empty($fileType)) {

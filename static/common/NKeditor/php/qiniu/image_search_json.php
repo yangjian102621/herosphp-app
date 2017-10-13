@@ -6,6 +6,7 @@
 error_reporting(0);
 set_time_limit(0);
 require_once '../JsonResult.php';
+
 $page = intval($_GET["page"]);
 $kw = trim($_GET['kw']);
 $apiUrl = "http://image.so.com/j?q={$kw}&src=tab_www&sn={$page}&pn=15";

@@ -7,9 +7,8 @@ use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
 
 error_reporting(0);
-require_once "vendor/autoload.php";
-require_once "../JsonResult.php";
 require_once "config.php";
+require_once "../JsonResult.php";
 
 $img_url = trim($_GET["img_url"]);
 $tmp_dir = dirname(__DIR__)."/tmp";

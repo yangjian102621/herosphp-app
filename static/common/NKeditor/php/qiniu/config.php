@@ -10,6 +10,9 @@ define("QINIU_SECRET_KEY", "J_As9ApfpyCpk31l3hOAZe3QQTc8iYlEfdd6-5an");
 define("QINIU_TEST_BUCKET", "kindeditor");
 define("QINIU_BUCKET_DOMAIN", "http://ow93rpra1.bkt.clouddn.com/");
 
+// 引入 composer 自动加载类
+require_once dirname(__FILE__, 6)."/vendor/autoload.php";
+
 /**
  * 获取文件后缀名
  * @param $filename

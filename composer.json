@@ -13,7 +13,8 @@
     ],
 
     "require": {
-        "herosphp/framework": "dev-master"
+        "herosphp/framework": "^v3.0.2",
+        "qiniu/php-sdk": "^7.2"
     },
 
     "autoload": {
