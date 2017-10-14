@@ -10,6 +10,10 @@ cd herosphp-app
 composer install
 ```
 
+演示地址：
+=======
+### [http://herosphp.r9it.com](http://herosphp.r9it.com)
+
 源码地址
 ====
 码云: [http://git.oschina.net/blackfox/herosphp-app](http://git.oschina.net/blackfox/herosphp-app)
