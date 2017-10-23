@@ -7,8 +7,8 @@
  */
 define("QINIU_ACCESS_KEY", "_-BMslq1mPL_zY0KN2iLD1-ym4TcHhQUi0_dDFPB");
 define("QINIU_SECRET_KEY", "J_As9ApfpyCpk31l3hOAZe3QQTc8iYlEfdd6-5an");
-define("QINIU_TEST_BUCKET", "kindeditor");
-define("QINIU_BUCKET_DOMAIN", "http://ow93rpra1.bkt.clouddn.com/");
+define("QINIU_TEST_BUCKET", "herosphp");
+define("QINIU_BUCKET_DOMAIN", "http://oxy1ihdnt.bkt.clouddn.com/");
 
 // 引入 composer 自动加载类
 require_once dirname(__FILE__, 6)."/vendor/autoload.php";
