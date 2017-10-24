@@ -1,11 +1,16 @@
 <?php
-/**
+/****************************************************
+ * NKeditor PHP
+ * 本PHP程序是演示程序，建议不要直接在实际项目中使用。
+ * 如果您确定直接使用本程序，使用之前请仔细确认相关安全设置。
+ * **************************************************
  * 从360服务器上搜索图片并返回图片地址列表
  * @author yangjian<yangjian102621@gmail.com>
  */
 error_reporting(0);
 set_time_limit(0);
 require_once '../JsonResult.php';
+require_once "../functions.php";
 
 $page = intval($_GET["page"]);
 $kw = trim($_GET['kw']);
@@ -19,7 +24,7 @@ if ( is_array($data["list"]) ) {
         $baseUrl = dirname($_SERVER['PHP_SELF']);
         //这里为了防止搜索的图片禁止盗链，前端无法显示，这里提供一个图片抓取的后端页面
         array_push($files, array(
-            "thumbURL" => "php/image_grap_json.php?img_url={$value["thumb"]}",
+            "thumbURL" => $baseUrl."/image_grap_json.php?img_url={$value["thumb"]}",
             "oriURL" => "{$baseUrl}/files/".$filename,
             "width" => $value["width"],
             "height" => $value["height"]));

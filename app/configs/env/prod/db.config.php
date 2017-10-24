@@ -17,8 +17,8 @@ return array(
             'db_host'      => 'localhost',
             'db_port'      => 3306,
             'db_user'      => 'root',
-            'db_pass'      => '123456',
-            'db_name'      => 'test',
+            'db_pass'      => '12345678',
+            'db_name'      => 'herosphp_app',
             'db_charset'   => 'utf8',
             'serial'       => 'db-write',      //写服务器,如果没有配置读写分离，则此处不用理它
         ),

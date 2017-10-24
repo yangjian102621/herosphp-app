@@ -104,15 +104,43 @@ define(function(require, exports) {
 				allowImageUpload : true,
 				allowMediaUpload : true,
 				afterCreate : function() {
-					var self = this;
-					K.ctrl(document, 13, function() {
-						self.sync();
-						K('form[name=example]')[0].submit();
-					});
-					K.ctrl(self.edit.doc, 13, function() {
-						self.sync();
-						K('form[name=example]')[0].submit();
-					});
+					//var self = this;
+					//K.ctrl(document, 13, function() {
+					//	self.sync();
+					//	K('form[name=example]')[0].submit();
+					//});
+					//K.ctrl(self.edit.doc, 13, function() {
+					//	self.sync();
+					//	K('form[name=example]')[0].submit();
+					//});
+				},
+				//错误处理 handler
+				errorMsgHandler : function(message, type) {
+					JDialog.msg({type:type, content:message, timer:2000, offset:60});
+				}
+			});
+
+			K.create('textarea[name="content1"]', {
+
+				filePostName : 'imgFile',
+				uploadJson : K.basePath+'php/default/upload_json.php',
+				fileManagerJson : K.basePath+'php/default/file_manager_json.php',
+				imageSearchJson : K.basePath+'php/default/image_search_json.php', //图片搜索url
+				imageGrapJson : K.basePath+'php/default/image_grap_json.php', //抓取选中的搜索图片地址
+				allowFileManager : true,
+				allowImageUpload : true,
+				allowMediaUpload : true,
+				themeType : "black",
+				afterCreate : function() {
+					//var self = this;
+					//K.ctrl(document, 13, function() {
+					//	self.sync();
+					//	K('form[name=example]')[0].submit();
+					//});
+					//K.ctrl(self.edit.doc, 13, function() {
+					//	self.sync();
+					//	K('form[name=example]')[0].submit();
+					//});
 				},
 				//错误处理 handler
 				errorMsgHandler : function(message, type) {
