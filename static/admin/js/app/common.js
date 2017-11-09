@@ -96,8 +96,18 @@
 	             * @returns {boolean}
 	             */
 	            submit : function () {
+					var isFormValid = true;
+		            if (typeof $(formId).validator('isFormValid') == 'object') {
+			            $.when($(formId).validator('isFormValid')).then(function() {
+				            isFormValid = true;
+			            }, function() {
+				            isFormValid = false;
+			            });
+		            } else {
+			            isFormValid = $(formId).validator('isFormValid');
+		            }
 
-		            if ( $(formId).validator('isFormValid') == false) {
+		            if ( isFormValid == false) { //表单验证失败
 			            return false;
 		            }
 		            var $btn = $('button[type="submit"]');
