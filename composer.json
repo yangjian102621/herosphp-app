@@ -12,9 +12,17 @@
         }
     ],
 
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/php/herosphp"
+        }
+    ],
+
     "require": {
-        "herosphp/framework": "dev-master",
-        "qiniu/php-sdk": "^7.2"
+        "herosphp/framework": "*@dev",
+        "qiniu/php-sdk": "^7.2",
+        "phpunit/phpunit": "5.7.23"
     },
 
     "autoload": {

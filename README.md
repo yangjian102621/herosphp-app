@@ -32,6 +32,19 @@ http://docs.r9it.com/herosphp/v3.0/
 
 版本更新记录
 ======
+
+## version 3.0.3
+1. 修复 MysqlModel::where 方法中闭包判断的bug， 之前使用的是 is_callable($field), 导致在 $field 是 url 这种函数名的时候会被当做闭包判断。
+2. 给 RedisSession 的缓存加上前缀，需要在 app/configs/session.config.php 的 redis session configure 中加上 prefix key，
+指定redis session 存储前缀
+3. 修改 Filter 类，将一些常用的过滤 API 暴露出去可以作为工具单独使用。
+4. 修复 MysqlModel::whereOr 闭包查询bug
+
+## version 3.0.2
+1. 重构了 MysqlModel， 新增了 getSqlBuilder() 和 setSqlBuilder() 方法
+2. 修改 JsonResult 的数据结构
+3. 增加Session存Redis带前缀prefix功能
+
 ## version 3.0.1
 1. 修复了 MysqlQueryBuilder::addWhere 方法的bug, 当第三个参数不传入时查询报错。
 2. 修复 JsonResult::output 输出日志乱码的bug。
