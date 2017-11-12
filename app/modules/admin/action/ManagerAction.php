@@ -110,6 +110,8 @@ class ManagerAction extends CommonAction {
         if ($password != $this->loginUser->getPassword()) {
             JsonResult::fail(Lang::OLD_PASS_ERROR);
         }
+        // 这里防止线上 demo 别人不小心修改了密码，导致其他人无法登录这里直接返回成功了。
+        JsonResult::success(Lang::MD_PASS_SUCCESS);
         $newpassword = $request->getParameter('newpassword','trim');
         $password = genPassword($newpassword, $this->loginUser->getSalt());
         if ($this->service->set('password', $password, $this->loginUser->getId())) {
