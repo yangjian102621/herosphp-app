@@ -55,7 +55,7 @@ define(function(require, exports) {
 		var loader;
 
 		$("#upload-btn").JUpload({
-			url : "/admin/upload",
+			url : "/admin/upload/qiniu",
 			src : "file",
 			maxFileNum : 5,
 			extAllow : "jpg|png|gif|jpeg",

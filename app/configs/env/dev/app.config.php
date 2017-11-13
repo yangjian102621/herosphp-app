@@ -32,7 +32,7 @@ $config = array(
     'default_url' => array(
         'module' => 'admin',
         'action' => 'login',
-        'method' => 'index' ),
+        'method' => 'index'),
 
     'template' => 'default',    //默认模板
     'temp_cache' => 0,      //模板引擎缓存
@@ -49,14 +49,22 @@ $config = array(
     'site_author' => 'yangjian102621@gmail.com',
     'site_copyright' => '2016 &copy; HerosPHP by BlackFox',
 
-    'rsa_private_key' => __DIR__.'/keys/rsa_private_key.pem',
-    'rsa_public_key' => __DIR__.'/keys/rsa_public_key.pem',
+    'rsa_private_key' => __DIR__ . '/keys/rsa_private_key.pem',
+    'rsa_public_key' => __DIR__ . '/keys/rsa_public_key.pem',
 
     // 后台权限分组
     'permission_group' => array(
         'system' => '系统管理',
         'user' => '用户管理'
-    )
+    ),
+
+    // 七牛文件空间配置
+    'qiniu_upload_configs' => [
+        "ACCESS_KEY" => "_-BMslq1mPL_zY0KN2iLD1-ym4TcHhQUi0_dDFPB",
+        "SECRET_KEY" => "J_As9ApfpyCpk31l3hOAZe3QQTc8iYlEfdd6-5an",
+        "BUCKET" => "herosphp",
+        "BUCKET_DOMAIN" => "http://oxy1ihdnt.bkt.clouddn.com/",
+    ],
 
 );
 
