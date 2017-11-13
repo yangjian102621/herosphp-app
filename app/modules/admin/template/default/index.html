@@ -16,7 +16,7 @@
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title  am-cf" th:text="${title}">数据添加</div>
+                            <div class="widget-title  am-cf" th:text="${title}">数据添加 {res /20171109/php-webdriver.html}</div>
                         </div>
                         <div class="widget-body  am-fr">
     
@@ -24,7 +24,9 @@
                                 <form data-action="/admin/doAdd" class="am-form" id="cAdd" data-location="/admin/manager/index">
                                     <div class="am-form-group">
                                         <label class="am-form-label">用户名：</label>
-                                        <input type="text" maxlength="20" name="username" placeholder="输入用户名 6-20"
+                                        <input type="text" maxlength="20" name="username"
+                                               data-name="username"
+                                               placeholder="输入用户名 6-20"
                                                class="js-ajax-validate" data-url="/admin/manager/exists/"
                                                data-validation-message="用户名已经被注册,请更换." required>
                                     </div>

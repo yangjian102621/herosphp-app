@@ -11,17 +11,17 @@ define(function(require, exports) {
 	require("datepicker");
 
     common.initForm("#cAdd", {
-	    validate: function(validity) {
-		    // if (validity.field.id == 'pic') {
-		    //     alert("fuck");
-			 //    // var date = validity.field.value;
-			 //    // var date1 = $('#startdate').val();
-			 //    // if (date1 > date) {
-				//  //    validity.valid = false;
-			 //    // }
-		    // }
-
-	    },
+	    //validate: function(validity) {
+		 //   // if (validity.field.id == 'pic') {
+		 //   //     alert("fuck");
+			// //    // var date = validity.field.value;
+			// //    // var date1 = $('#startdate').val();
+			// //    // if (date1 > date) {
+			//	//  //    validity.valid = false;
+			// //    // }
+		 //   // }
+	    //
+	    //},
     });
 
 	//初始化 chosen 控件

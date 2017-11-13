@@ -9,6 +9,7 @@
  * ---------------------------------------------------------------------
  * Author: <yangjian102621@gmail.com>
  *-----------------------------------------------------------------------*/
+defined('RES_SERVER_URL') || define('RES_SERVER_URL', 'http://www.r9it.com/');
 $config = array(
 
     'template' => 'default',    //默认模板
