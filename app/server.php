@@ -10,6 +10,7 @@ header("Content-Type:text/html; charset=utf-8");
 define('APP_DEBUG', true);
 //定义时区
 define('TIME_ZONE', 'PRC');
+define('APP_NAME', 'app');
 //设置错误等级
 define('ERROR_LEVEL', E_ALL & ~E_NOTICE  & ~E_WARNING &~E_STRICT);
 // 定义系统根目录

@@ -2,6 +2,7 @@
 namespace app\demo\action;
 
 use herosphp\cache\CacheFactory;
+use herosphp\cache\FileCache;
 use herosphp\core\Controller;
 use herosphp\core\Loader;
 use herosphp\http\HttpRequest;
@@ -15,41 +16,14 @@ use herosphp\utils\RedisUtils;
 class CacheAction extends Controller {
 
     /**
-     * 首页方法
+     * 通用缓存
      * @param HttpRequest $request
      */
     public function index( HttpRequest $request ) {
 
-        $CACHER = CacheFactory::create('file');
-        $CACHER->baseKey('article')->ftype('list')->factor(1);
-        $items = $CACHER->get(null);
-        if ( !$items ) {
-            $model = Loader::model('article');
-            $items = $model->getItems(null,null,"id desc",1,20);
-            if ( $CACHER->set(null, $items) ) {
-                __print("生成动态缓存成功！");
-            }
-
-            die();
-
-        } else {
-
-            $this->assign('items', $items);
-            $this->setView('article_index');
-
-        }
-
-    }
-
-    /**
-     * 通用缓存
-     * @param HttpRequest $request
-     */
-    public function common( HttpRequest $request ) {
-
-        $CACHE = CacheFactory::create('file');
+        $CACHE = CacheFactory::create(FileCache::class);
         $key  = 'test.cache.key';
-        $CACHE->set($key, 'this is the test cache data. fuck it what ever!', 10);
+        $CACHE->set($key, 'this is the test cache data. fuck it whatever!', 10);
         $data = $CACHE->get($key);
         __print($data);
         die();

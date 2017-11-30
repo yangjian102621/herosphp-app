@@ -2,6 +2,7 @@
 namespace app\admin\service;
 
 use herosphp\cache\CacheFactory;
+use herosphp\cache\FileCache;
 use herosphp\model\CommonService;
 use app\admin\dao\AdminMenuDao;
 use herosphp\utils\ArrayUtils;
@@ -20,7 +21,7 @@ class AdminMenuService extends CommonService {
      * 获取菜单缓存
      */
     public function getMenuCache() {
-        $cacher = CacheFactory::create('file');
+        $cacher = CacheFactory::create(FileCache::class);
         $items = $cacher->get(self::MENU_CACHE_KEY);
         if (empty($items)) {
             $this->updateMenuCache();
@@ -40,7 +41,7 @@ class AdminMenuService extends CommonService {
             $topMenus[$k]['subs'] = ArrayUtils::filterArrayByKey('pid', $v['id'], $menus);
         }
 
-        $cacher = CacheFactory::create('file');
+        $cacher = CacheFactory::create(FileCache::class);
         $cacher->set(self::MENU_CACHE_KEY, $topMenus, 0);
     }
 

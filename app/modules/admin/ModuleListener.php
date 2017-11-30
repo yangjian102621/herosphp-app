@@ -1,6 +1,6 @@
 <?php
 
-namespace app\demo;
+namespace app\admin;
 
 use herosphp\core\WebApplication;
 use herosphp\http\HttpRequest;

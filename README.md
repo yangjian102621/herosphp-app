@@ -40,6 +40,8 @@ http://docs.r9it.com/herosphp/v3.0/
 3. 修改 Filter 类，将一些常用的过滤 API 暴露出去可以作为工具单独使用。
 4. 修复 MysqlModel::whereOr 闭包查询bug
 5. 新增新的模板标签 {res $url} 输出格式化的静态资源地址。如果设置了cdn地址常量 RES_SERVER_URL 则会自动把相对的 URL 转化为绝对的 URL.
+6. 更改缓存工厂(CacheFactory)的实现，采用类似动态工厂的方式，如果再新增缓存实现的时候，不需要再更改工厂类的代码。
+7. 修复创建多个项目时造成的监听器加载异常的bug
 
 ## version 3.0.2
 1. 重构了 MysqlModel， 新增了 getSqlBuilder() 和 setSqlBuilder() 方法
