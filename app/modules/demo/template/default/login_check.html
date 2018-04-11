@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<title>确认登录</title>
+	{res:css common/weui/weui.css}
+
+	<style>
+		.page__bd {
+			text-align: center;
+			padding: 20px 0px;
+		}
+		h3,h5 {
+			color: #333333;
+			font-weight: normal;
+			padding: 5px 0px;
+		}
+		h5 {
+			font-size: 16px;
+			color: #000;
+		}
+		ul {
+			color: #666666;
+			padding: 10px 10px 10px 20px;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+	<div style="padding: 30px;">
+		<div class="page__bd">
+			<img src="/static/common/images/logo.png" width="170">
+			<h3>智能空间微信登录</h3>
+		</div>
+		<h5>即将登录智能空间微信登录，请确认是本人操作</h5>
+		<ul>
+			<li>使用你的账户登录该应用</li>
+		</ul>
+		<div>
+			<a href="javascript:;" class="weui-btn weui-btn_primary" id="confirm">确认的登录</a>
+			<a href="javascript:;" class="weui-btn weui-btn_default">取消</a>
+		</div>
+
+		<div id="toast" style="display: none;">
+			<div class="weui-mask_transparent"></div>
+			<div class="weui-toast">
+				<i class="weui-icon-success-no-circle weui-icon_toast"></i>
+				<p class="weui-toast__content">登录成功</p>
+			</div>
+		</div>
+	</div>
+	{res:js common/js/jquery.min.js}
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script>
+
+	<script>
+		$("#confirm").on("click", function() {
+			$(this).addClass("weui-btn_loading").html('<i class="weui-loading"></i>正在登录……');
+			$.get("/demo/login/loginCheck",
+				{
+					username : "xiaoming"
+				}, function(res) {
+				if(res == "LOGIN_OK") {
+					$("#confirm").removeClass("weui-btn_loading").html('确认登录');
+					var $toast = $('#toast');
+					if ($toast.css('display') != 'none') return;
+
+					$toast.fadeIn(100);
+					setTimeout(function () {
+						$toast.fadeOut(100);
+					}, 2000);
+				}
+			})
+		});
+	</script>
+</body>
+</html>

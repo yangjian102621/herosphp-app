@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<title>扫码登录</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+</head>
+<body style="background: #333333;">
+	<div class="container" style="width: 300px;margin: auto; padding-top: 100px;">
+		<div class="row">
+			<div class="col align-self-center">
+				<div class="alert alert-success" role="alert">
+					请打开手机微信扫描二维码
+				</div>
+				<img class="img-thumbnail rounded mx-auto d-block" style="width: 100%" src="/demo/login/qrcode"
+				     id="qrcode" />
+				<p></p>
+				<button type="button" class="btn btn-lg btn-block" id="login-status"
+				        style="display: none;"><i class="glyphicon glyphicon-heart"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+	{res:js common/js/jquery.min.js}
+
+	<script>
+		function request(url) {
+			$.get(url, function(res) {
+				console.log(res);
+				if (res == "LOGIN_ING") {
+					$("#login-status").addClass("btn-info").html("扫码成功，正在登录……").show();
+					$("#qrcode").attr("src", "/demo/login/qrcode?random="+Math.random());
+					console.log("扫码成功");
+					request(url);
+				} else if (res == "LOGIN_OK") {
+					$("#login-status").removeClass("btn-info").addClass("btn-success").html("登录成功，正在跳转……");
+					setTimeout(function() {
+						location.href = "/demo/login/success";
+					}, 1000)
+					console.log("登录成功");
+					return;
+				} else {
+					request(url);
+				}
+			});
+		}
+		request("/demo/login/status");
+	</script>
+</body>
+</html>
