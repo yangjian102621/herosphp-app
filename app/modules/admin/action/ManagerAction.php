@@ -32,6 +32,18 @@ class ManagerAction extends CommonAction {
     }
 
     /**
+     * 获取管理员数据列表
+     * @param HttpRequest $request
+     * @return void
+     */
+    public function list(HttpRequest $request) {
+
+        $result = parent::list($request);
+        $result->output();
+
+    }
+
+    /**
      * 添加数据
      * @param HttpRequest $request
      */

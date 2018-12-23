@@ -24,7 +24,7 @@ abstract class CommonAction extends Controller {
     protected $page = 1;
 
     // 每页数量
-    protected $pageSize = 15;
+    protected $pageSize = 12;
 
     //排序方式
     protected $order = "id DESC";
@@ -102,6 +102,33 @@ abstract class CommonAction extends Controller {
     }
 
     /**
+     * 获取数据列表
+     * @param HttpRequest $request
+     * @return JsonResult
+     */
+    public function list(HttpRequest $request) {
+
+        $page = $request->getIntParam("page");
+        $pageSize = $request->getIntParam("pagesize");
+        $this->setPage($page);
+        $this->setPageSize($pageSize);
+        if (empty($this->service)) {
+            $this->service = Loader::service($this->serviceClass);
+        }
+
+        $sqlBuilder = $this->service->getSqlBuilder();
+        $items = $this->service->page($this->getPage(), $this->getPagesize())->order($this->getOrder())->find();
+        $total = $this->service->setSqlBuilder($sqlBuilder)->count();
+        $res = new JsonResult(JsonResult::CODE_SUCCESS, "数据获取成功.");
+        $res->setCount($total);
+        $res->setPage($this->getPage());
+        $res->setPagesize($this->getPageSize());
+        $res->setItems($items);
+        return $res;
+
+    }
+
+    /**
      * 分页
      * @param $total
      * @param $pagesize
@@ -140,7 +167,7 @@ abstract class CommonAction extends Controller {
     protected function _edit(HttpRequest $request) {
         $id = $request->getParameter('id', 'trim');
         if (empty($id)) {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
+            JsonResult::fail(Lang::NO_RECOEDS);
         } else {
             $item = $this->service->findById($id);
             $this->assign('item', $item);
@@ -160,10 +187,10 @@ abstract class CommonAction extends Controller {
             if (!is_null($callback)) {
                 call_user_func($callback, $this->service);
             }
-            JsonResult::result(JsonResult::CODE_SUCCESS, Lang::INSERT_SUCCESS);
+            JsonResult::success(Lang::INSERT_SUCCESS);
         } else {
             $message = WebApplication::getInstance()->getAppError()->getMessage();
-            JsonResult::result(JsonResult::CODE_FAIL, empty($message) ? Lang::INSERT_FAIL : $message);
+            JsonResult::fail(empty($message) ? Lang::INSERT_FAIL : $message);
         }
     }
 
@@ -175,17 +202,17 @@ abstract class CommonAction extends Controller {
      */
     protected function _update(array $data, $id, $callback) {
         if (empty($id)) {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
+            JsonResult::fail(Lang::NO_RECOEDS);
         }
         $data['updatetime'] = date('Y-m-d H:i:s');
         if ($this->service->update($data, $id)) {
             if (!is_null($callback)) {
                 call_user_func($callback, $this->service);
             }
-            JsonResult::result(JsonResult::CODE_SUCCESS, Lang::UPDATE_SUCCESS);
+            JsonResult::success(Lang::UPDATE_SUCCESS);
         } else {
             $message = WebApplication::getInstance()->getAppError()->getMessage();
-            JsonResult::result(JsonResult::CODE_FAIL, empty($message) ? Lang::UPDATE_FAIL : $message);
+            JsonResult::fail(empty($message) ? Lang::UPDATE_FAIL : $message);
         }
     }
 
@@ -227,7 +254,7 @@ abstract class CommonAction extends Controller {
 
         $id = $request->getParameter('id', 'trim');
         if ( empty($id) ) {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
+            JsonResult::fail(Lang::NO_RECOEDS);
         }
         if ( $this->service->delete($id) ) {
 
@@ -235,9 +262,9 @@ abstract class CommonAction extends Controller {
                 call_user_func($callback, $this->service);
             }
 
-            JsonResult::result(JsonResult::CODE_SUCCESS, Lang::DELETE_SUCCESS);
+            JsonResult::success(Lang::DELETE_SUCCESS);
         } else {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::DELETE_FAIL);
+            JsonResult::fail(Lang::DELETE_FAIL);
         }
     }
 
@@ -260,12 +287,12 @@ abstract class CommonAction extends Controller {
     public function deletes( HttpRequest $request ) {
         $ids = $request->getParameter('ids');
         if (empty($ids)){
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::NO_RECOEDS);
+            JsonResult::fail(Lang::NO_RECOEDS);
         }
         if ($this->service->deletes($ids)) {
-            JsonResult::result(JsonResult::CODE_SUCCESS, Lang::DELETE_SUCCESS);
+            JsonResult::success(Lang::DELETE_SUCCESS);
         } else {
-            JsonResult::result(JsonResult::CODE_FAIL, Lang::DELETE_FAIL);
+            JsonResult::fail(Lang::DELETE_FAIL);
         }
     }
 
@@ -311,7 +338,11 @@ abstract class CommonAction extends Controller {
      */
     public function setPage($page)
     {
-        $this->page = $page;
+        if ($page > 0) {
+            $this->page = $page;
+        } else {
+            $this->page = 1;
+        }
     }
 
     /**
@@ -327,7 +358,9 @@ abstract class CommonAction extends Controller {
      */
     public function setPageSize($pageSize)
     {
-        $this->pageSize = $pageSize;
+        if ($pageSize > 0) {
+            $this->pageSize = $pageSize;
+        }
     }
 
     /**

@@ -72,13 +72,5 @@ class ImageAction extends Controller {
         $thumb->crop(array(0,0), array(100,100), 'src.png', 'crop.png', false);
         $thumb->showImage();
     }
-
-    /**
-     * 显示一个二维码
-     * @param HttpRequest $request
-     */
-    public function qrcode(HttpRequest $request) {
-        QRcode::png("http://www.baidu.com")->size(400)->show();
-    }
   
 }

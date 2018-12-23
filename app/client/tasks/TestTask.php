@@ -3,6 +3,8 @@
 namespace client\tasks;
 
 use client\tasks\interfaces\ITask;
+use herosphp\gmodel\utils\SimpleHtmlDom;
+use herosphp\http\HttpClient;
 use herosphp\string\StringUtils;
 
 /**
@@ -14,11 +16,7 @@ class TestTask implements ITask {
 
         public function run() {
 
-            for ($i = 0; $i < 100; $i++) {
-                tprintError(StringUtils::genGlobalUid());
-            }
-
-            tprintOk("Hello, Body! You are running a Task.");
+            tprintOk("OK, The task is done.");
         }
 
 } 

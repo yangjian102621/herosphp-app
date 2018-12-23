@@ -40,7 +40,7 @@ class SessionAction extends Controller {
 
     public function gc(HttpRequest $request) {
         Session::gc();
-        JsonResult::result(400);
+        JsonResult::success();
     }
   
 }

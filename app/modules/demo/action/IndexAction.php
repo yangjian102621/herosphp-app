@@ -5,6 +5,8 @@ use app\admin\service\AdminPermissionService;
 use app\admin\service\AdminService;
 use herosphp\core\Controller;
 use herosphp\core\Loader;
+use herosphp\gmodel\utils\SimpleHtmlDom;
+use herosphp\http\HttpClient;
 use herosphp\http\HttpRequest;
 use herosphp\utils\JsonResult;
 
@@ -35,6 +37,17 @@ class IndexAction extends Controller {
         $res->setItems($items);
         $res->setCode(JsonResult::CODE_SUCCESS);
         $res->output();
+    }
+
+    /**
+     * just a test
+     */
+    public function test() {
+
+
+
+
+        die();
     }
 
 }
