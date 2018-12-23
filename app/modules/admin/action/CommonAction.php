@@ -55,9 +55,9 @@ abstract class CommonAction extends Controller {
         //获取当前登陆管理员
         $adminService = Loader::service(AdminService::class);
         $loginUser = $adminService->getLoginManager();
-        if (!$loginUser) {
-            location("/admin/login/index");
-        }
+//        if (!$loginUser) {
+//            location("/admin/login/index");
+//        }
         $this->loginUser = ModelTransformUtils::map2Model(Admin::class, $loginUser);
         $this->assign('loginUser', $this->loginUser);
 

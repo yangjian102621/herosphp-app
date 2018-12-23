@@ -1,26 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<!-- header styles and scripts -->
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>{$appConfigs[site_name]}</title>
-    <meta name="description" content="{$appConfigs[site_desc]}" />
-    <meta name="author" content="{$appConfigs[site_author]}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="renderer" content="webkit" />
-    
-    <link rel="icon" type="image/png" href="/static/admin/i/favicon.png" />
-    <link rel="apple-touch-icon-precomposed" href="/static/admin/i/app-icon72x72@2x.png" />
-    {res:css admin/css/amazeui.min.css}
-    {res:css common/js/datepicker/amazeui.datetimepicker.min.css}
-    {res:css common/js/chosen/amazeui.chosen.css}
-    {res:css admin/css/app.css}
-    {res:css admin/css/admin.css}
-
-    {res:js common/js/jquery.min.js}
-    {res:js common/js/sea.min.js}
-    {res:js admin/js/admin-config.js}
-
-</head>
+<div class="header clearfix">
+    <div class="pull-left header-text">
+        星际鑫航矿机云监测</div>
+    <ul class="nav navbar-nav float-right" id="dropdown-nav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown05">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+    </ul>
+</div>
