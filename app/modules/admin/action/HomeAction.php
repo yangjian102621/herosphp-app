@@ -7,7 +7,7 @@ use herosphp\http\HttpRequest;
  * 后台
  * @author  yangjian<yangjian102621@gmail.com>
  */
-class IndexAction extends CommonAction {
+class HomeAction extends CommonAction {
 
     /**
      * 列表
@@ -15,6 +15,7 @@ class IndexAction extends CommonAction {
      */
     public function index(HttpRequest $request) {
 
+        $this->assign('title', 'Herosphp 系统管理后台');
         $this->setView("index");
 
     }

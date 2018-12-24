@@ -20,7 +20,7 @@ class LoginAction extends Controller {
      */
     public function index( HttpRequest $request ) {
 
-        $this->setView("admin/login");
+        $this->setView("manager/login");
 
     }
 

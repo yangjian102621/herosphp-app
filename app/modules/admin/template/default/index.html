@@ -1,252 +1,121 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
-
-    <title>Dashboard Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/static/admin/css/icons/css/open-iconic-bootstrap.min.css" rel="stylesheet">
-    <link href="/static/admin/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/static/admin/css/admin.css" rel="stylesheet">
+    {include admin.inc.header}
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <a class="navbar-brand" href="#">Herosphp Manager System</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown06">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
-        </ul>
-        <div class="mt-2 mt-md-0">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出登录</button>
-        </div>
-    </div>
-</nav>
+
+{include admin.inc.nav}
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <em class="oi oi-home"></em>
-                            仪表盘
-                        </a>
+        {include admin.inc.sidebar}
+
+        <main role="main" class="main col-md-10 ml-sm-auto col-lg-10">
+
+            <div class="tab-box">
+                <ul class="tab-title" id="tab-title">
+                    <li class="text-info pt-1" id="reload" title="刷新页面">
+                        <em class="oi oi-reload"></em>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <em class="oi oi-tags"></em>
-                            订单
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <em class="oi oi-cart"></em>
-                            产品
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <em class="oi oi-people"></em>
-                            客户
-                        </a>
+                    <li tab-id="0">
+                        <em class="oi oi-home"></em> 我的桌面
                     </li>
                 </ul>
-
-                <div class="sidebar-heading justify-content-between align-items-center text-muted">
-                    <span>Saved reports</span>
-                    <em class="oi oi-plus float-right"></em>
+                <div class="tab-content" id="tab-content">
+                    <div class="tab-item show" page-id="0">
+                        <iframe src="/admin/login/index" frameborder="0" class="x-iframe"></iframe>
+                    </div>
                 </div>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Current month
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Last quarter
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Social engagement
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Year-end sale
-                        </a>
-                    </li>
-                </ul>
             </div>
-        </nav>
 
-        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4">
-
-            <h2>Section title</h2>
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1,001</td>
-                        <td>Lorem</td>
-                        <td>ipsum</td>
-                        <td>dolor</td>
-                        <td>sit</td>
-                    </tr>
-                    <tr>
-                        <td>1,002</td>
-                        <td>amet</td>
-                        <td>consectetur</td>
-                        <td>adipiscing</td>
-                        <td>elit</td>
-                    </tr>
-                    <tr>
-                        <td>1,003</td>
-                        <td>Integer</td>
-                        <td>nec</td>
-                        <td>odio</td>
-                        <td>Praesent</td>
-                    </tr>
-                    <tr>
-                        <td>1,003</td>
-                        <td>libero</td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                        <td>ante</td>
-                    </tr>
-                    <tr>
-                        <td>1,004</td>
-                        <td>dapibus</td>
-                        <td>diam</td>
-                        <td>Sed</td>
-                        <td>nisi</td>
-                    </tr>
-                    <tr>
-                        <td>1,005</td>
-                        <td>Nulla</td>
-                        <td>quis</td>
-                        <td>sem</td>
-                        <td>at</td>
-                    </tr>
-                    <tr>
-                        <td>1,006</td>
-                        <td>nibh</td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>Duis</td>
-                    </tr>
-                    <tr>
-                        <td>1,007</td>
-                        <td>sagittis</td>
-                        <td>ipsum</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                    </tr>
-                    <tr>
-                        <td>1,008</td>
-                        <td>Fusce</td>
-                        <td>nec</td>
-                        <td>tellus</td>
-                        <td>sed</td>
-                    </tr>
-                    <tr>
-                        <td>1,009</td>
-                        <td>augue</td>
-                        <td>semper</td>
-                        <td>porta</td>
-                        <td>Mauris</td>
-                    </tr>
-                    <tr>
-                        <td>1,010</td>
-                        <td>massa</td>
-                        <td>Vestibulum</td>
-                        <td>lacinia</td>
-                        <td>arcu</td>
-                    </tr>
-                    <tr>
-                        <td>1,011</td>
-                        <td>eget</td>
-                        <td>nulla</td>
-                        <td>Class</td>
-                        <td>aptent</td>
-                    </tr>
-                    <tr>
-                        <td>1,012</td>
-                        <td>taciti</td>
-                        <td>sociosqu</td>
-                        <td>ad</td>
-                        <td>litora</td>
-                    </tr>
-                    <tr>
-                        <td>1,013</td>
-                        <td>torquent</td>
-                        <td>per</td>
-                        <td>conubia</td>
-                        <td>nostra</td>
-                    </tr>
-                    <tr>
-                        <td>1,014</td>
-                        <td>per</td>
-                        <td>inceptos</td>
-                        <td>himenaeos</td>
-                        <td>Curabitur</td>
-                    </tr>
-                    <tr>
-                        <td>1,015</td>
-                        <td>sodales</td>
-                        <td>ligula</td>
-                        <td>in</td>
-                        <td>libero</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
         </main>
     </div>
+
+    {include admin.inc.footer}
 </div>
 
 {res:js admin/js/jquery.min.js}
 {res:js admin/js/popper.min.js}
 {res:js admin/js/bootstrap.min.js}
 
+<script>
+    $(document).ready(function() {
+        // 自动计算页面的高度
+        $('#tab-content').css({
+            'height': $(window).height() - $('#tab-title').height() - 100 + 'px'
+        });
+
+        // 控制左侧菜单展开，收缩
+        $('#sidebar-container .sidebar-heading').click(function() {
+            $(this).next().toggle();
+        });
+        // 默认展开
+        $('#sidebar-container .sidebar-heading').trigger('click');
+
+        // 刷新当前页面
+        $('#reload').click(function() {
+            $('#tab-content .show').find('iframe')[0].contentWindow.location.reload(true);
+        });
+
+        // 菜单切换
+        (function() {
+            var $sideBarLinks = $('#sidebar-container .nav-item .nav-link');
+            $sideBarLinks.click(function() {
+                // 更改当前菜单选中状态
+                $('#sidebar-container .nav-item .active').removeClass('active');
+                $(this).addClass('active');
+                // 已经添加的菜单直接激活
+                var id = $(this).attr('data-id');
+                if (id) {
+                    $('#tab-title li[tab-id="'+id+'"]').trigger('active');
+                    return;
+                }
+                id = Math.random();
+                $(this).attr('data-id', id);
+                // 创建新的菜单
+                var href = $(this).attr('_href');
+                var text = $(this).text().trim();
+                var $tabTitle = $('<li tab-id="'+id+'">'+text+'</li>');
+                var $closeBtn = $('<em class="oi oi-circle-x" title="关闭当前窗口"></em>');
+                $closeBtn.click(function(e) {
+                    $(this).parent().trigger("remove");
+                    e.stopPropagation();
+                });
+                $tabTitle.append($closeBtn);
+                // 绑定菜单激活事件
+                $tabTitle.on('active click', function() {
+                    $('#tab-title .active').removeClass('active');
+                    $(this).addClass('active');
+                    var id = $(this).attr('tab-id');
+                    $('#tab-content .show').removeClass('show');
+                    $('#tab-content [page-id="'+id+'"]').addClass('show');
+                });
+                $tabTitle.on("remove", function() {
+                    var id = $(this).attr('tab-id');
+                    $('#tab-content [page-id="'+id+'"]').remove();
+                    $(this).prev().trigger('active');
+                });
+                $('#tab-title').append($tabTitle);
+                var $tabContent = $('#tab-content');
+                var $tabPage = $('<div class="tab-item" page-id="'+id+'"></div>');
+                var $iframe = '<iframe frameborder="0" src="' + href + '" scrolling="yes" class="x-iframe"></iframe>';
+                $tabPage.append($iframe);
+                $tabContent.append($tabPage);
+                $tabTitle.trigger('active');
+            });
+            // 绑定首页事件
+            $('#tab-title li:eq(1)').on('active click', function() {
+                $('#tab-title .active').removeClass('active');
+                $(this).addClass('active');
+                var id = $(this).attr('tab-id');
+                $('#tab-content .show').removeClass('show');
+                $('#tab-content [page-id="'+id+'"]').addClass('show');
+            });
+            $('#tab-title li:eq(1)').trigger('active');
+        })();
+    });
+</script>
 </body>
 </html>

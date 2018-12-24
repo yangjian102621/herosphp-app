@@ -52,7 +52,7 @@ class LoginAction extends Controller
      * @param HttpRequest $requests
      */
     public function qrcode(HttpRequest $request) {
-        QRcode::png("http://192.168.0.118/demo/login/check?username=xiaoming")->size(300)->show();
+        QRcode::png("http://192.168.0.110/demo/login/check?username=xiaoming")->size(300)->show();
     }
 
     /**
@@ -85,7 +85,7 @@ class LoginAction extends Controller
      */
     public function check(HttpRequest $request) {
         $username = $request->getParameter("username");
-        //登录中
+        // TODO 登录业务
         $this->cacher->set(self::LOGIN_STATUS, self::LOGIN_ING, 3600);
         $this->setView("login_check");
     }
