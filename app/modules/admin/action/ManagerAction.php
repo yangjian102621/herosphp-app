@@ -27,7 +27,7 @@ class ManagerAction extends CommonAction {
 
         parent::index($request);
         $this->setOpt($this->actionTitle.'列表');
-        $this->setView("admin/admin_index");
+        $this->setView("manager/manager-list");
 
     }
 

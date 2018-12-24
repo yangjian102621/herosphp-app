@@ -1,0 +1,11 @@
+{res:js admin/js/jquery.min.js}
+{res:js admin/js/popper.min.js}
+{res:js admin/js/bootstrap.min.js}
+
+<script>
+	/* === pre-loader init === */
+	$(window).on("load", function() {
+		$('#st-preloader').fadeOut();
+		$('.st-preloader-circle').delay(350).fadeOut('slow');
+	});
+</script>

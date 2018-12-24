@@ -20,6 +20,7 @@ class LoginAction extends Controller {
      */
     public function index( HttpRequest $request ) {
 
+        $this->assign('title', '后台管理登录');
         $this->setView("manager/login");
 
     }

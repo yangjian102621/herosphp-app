@@ -21,10 +21,10 @@ class HomeAction extends CommonAction {
     }
 
     /**
-     * 404 页面
+     * 后台欢迎页
      */
-    public function page404(HttpRequest $request) {
-        $this->setView('404');
+    public function welcome(HttpRequest $request) {
+        $this->setView('welcome');
     }
 
     /**

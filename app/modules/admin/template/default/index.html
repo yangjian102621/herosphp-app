@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     {include admin.inc.header}
+    <link href="/static/admin/css/index.css" rel="stylesheet">
 </head>
 
 <body>
-
 {include admin.inc.nav}
 
 <div class="container-fluid">
@@ -25,7 +25,7 @@
                 </ul>
                 <div class="tab-content" id="tab-content">
                     <div class="tab-item show" page-id="0">
-                        <iframe src="/admin/login/index" frameborder="0" class="x-iframe"></iframe>
+                        <iframe src="/admin/home/welcome" frameborder="0" class="x-iframe"></iframe>
                     </div>
                 </div>
             </div>
@@ -36,9 +36,7 @@
     {include admin.inc.footer}
 </div>
 
-{res:js admin/js/jquery.min.js}
-{res:js admin/js/popper.min.js}
-{res:js admin/js/bootstrap.min.js}
+{include admin.inc.script}
 
 <script>
     $(document).ready(function() {

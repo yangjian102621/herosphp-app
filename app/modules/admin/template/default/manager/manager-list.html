@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+	{include admin.inc.header}
+	<link href="/static/admin/css/page.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- pre-loader -->
+<div id="st-preloader">
+	<div class="st-preloader-circle"></div>
+</div>
+
+<div class="container-fluid">
+
+	<div class="row">
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead class="bg-light">
+				<tr>
+					<th scope="col" width="20">
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" id="select-all">
+							<label class="custom-control-label" for="select-all"></label>
+						</div>
+					</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+					<th scope="col">Heading</th>
+				</tr>
+				</thead>
+				<tbody>
+				{for ($i=0;$i<12;$i++)}
+				<tr>
+					<th scope="row">
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" id="{$i}">
+							<label class="custom-control-label" for="{$i}"></label>
+						</div>
+					</th>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+					<td>Cell</td>
+				</tr>
+				{/for}
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="table-responsive">
+			<ul class="pagination justify-content-end">
+				<li class="page-item disabled">
+					<span class="page-link">Previous</span>
+				</li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item active">
+					<span class="page-link">2</span>
+				</li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#">4</a></li>
+				<li class="page-item"><a class="page-link" href="#">5</a></li>
+				<li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+</div>
+
+{include admin.inc.script}
+<script>
+
+</script>
+</body>
+</html>

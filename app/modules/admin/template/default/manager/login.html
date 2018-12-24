@@ -1,21 +1,8 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
-
-    <title>Signin Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/static/admin/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
+    {include admin.inc.header}
     <link href="/static/admin/css/signin.css" rel="stylesheet">
-    <link href="/static/admin/css/page.css" rel="stylesheet">
 </head>
 
 <body class="text-center">
@@ -24,7 +11,7 @@
     <div class="st-preloader-circle"></div>
 </div>
 
-<form class="form-signin" method="post" action="/admin/home/index">
+<form class="form-signin" method="get" action="/admin/home/index">
     <img class="mb-4" src="/static/admin/images/logo.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">登入系统管理后台</h1>
     <label for="inputEmail" class="sr-only">用户名</label>
@@ -32,23 +19,18 @@
     <label for="inputPassword" class="sr-only">密码</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="密码">
     <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> 记住用户名
-        </label>
+        <div class="custom-control custom-checkbox text-info text-left">
+            <input type="checkbox" class="custom-control-input" id="save-info" checked>
+            <label class="custom-control-label" for="save-info">记住用户名</label>
+        </div>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+    <button class="btn btn-lg btn-info btn-block" type="submit">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
     <p class="mt-5 mb-3 text-muted">&copy; Herosphp 2018-now</p>
 </form>
 
-{res:js admin/js/jquery.min.js}
-{res:js admin/js/popper.min.js}
-{res:js admin/js/bootstrap.min.js}
+{include admin.inc.script}
 <script>
-    /* === pre-loader init === */
-    $(window).on("load", function() {
-        $('#st-preloader').fadeOut();
-        $('.st-preloader-circle').delay(350).fadeOut('slow');
-    });
+
 </script>
 </body>
 </html>
