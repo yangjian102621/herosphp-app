@@ -47,7 +47,8 @@
 					<td>{{ item.last_login_time }}</td>
 					<td class="td-compact">
 						<button type="button" class="btn btn-outline-info btn-sm">编辑</button>
-						<button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+						<button type="button" class="btn btn-outline-danger btn-sm" v-on:click="remove(item)">删除
+						</button>
 					</td>
 				</tr>
 				</tbody>
@@ -80,22 +81,37 @@
 			fetchData: function(url, params) {
 				httpGet(url, params, function(res) {
 					APP.$data.list = res.data;
+					renderPageHandler(res.count, res.page, res.pagesize);
 				}, function() {
 					messageError("加载数据失败！");
 				})
+			},
+
+			// 删除一条数据
+			remove: function(item) {
+				removeItem(item);
 			}
 		}
 	});
-	$('#page').pageHandler({
-		total: 100,
-		bool: '{$bool}',
-		pageNo: 1,
-		pageSize: 12,
-		align: 'center',
-		changePage: function(pageNo, pageSize) {
-			APP.fetchData(APP.$data.url, {pageNo: pageNo, pageSize: pageSize});
-		}
-	});
+
+	/**
+	 * 渲染分页组件
+	 * @param total
+	 * @param pageNo
+	 * @param pageSize
+	 */
+	function renderPageHandler(total, pageNo, pageSize) {
+		$('#page').pageHandler({
+			total: total,
+			pageNo: pageNo,
+			pageSize: pageSize,
+			align: 'center',
+			changePage: function(pageNo, pageSize) {
+				APP.fetchData(APP.$data.url, {pageNo: pageNo, pageSize: pageSize});
+			}
+		});
+	}
+
 </script>
 </body>
 </html>

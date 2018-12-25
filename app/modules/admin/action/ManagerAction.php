@@ -25,15 +25,19 @@ class ManagerAction extends CommonAction {
 
     }
 
+    public function clist(HttpRequest $request)
+    {
+        $res = parent::clist($request);
+        $res->output();
+    }
+
     /**
      * 添加数据
      * @param HttpRequest $request
      */
     public function add(HttpRequest $request) {
 
-        $this->setOpt($this->actionTitle.'添加');
         $this->setView('admin/admin_add');
-
         $this->loadRoles();
     }
 

@@ -190,12 +190,16 @@ function messageInfo(message, callback) {
 	return false;
 }
 // 加载提示
-function messageLoading() {
-	return JDialog.loader({
-		timer : 0,
-		lock : true,
-		skin : 4
-	});
+function messageLoading(style) {
+	if (style == 1) {
+		return JDialog.msg({type:'loading', content: "正在加载中，请稍后...",timer:0, lock: true})
+	} else {
+		return JDialog.loader({
+			timer : 0,
+			lock : true,
+			skin : 4
+		});
+	}
 }
 
 /**

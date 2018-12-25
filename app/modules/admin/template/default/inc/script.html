@@ -13,13 +13,4 @@
 		$('#st-preloader').fadeOut();
 		$('.st-preloader-circle').delay(350).fadeOut('slow');
 	});
-
-	// 初始化全选事件
-	$('#select-all').change(function() {
-		if (this.checked) {
-			$('#data-list-form input[name="ids[]"]').prop("checked", true);
-		} else {
-			$('#data-list-form input[name="ids[]"]').prop("checked", false);
-		}
-	});
 </script>

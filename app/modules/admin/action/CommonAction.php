@@ -94,7 +94,7 @@ abstract class CommonAction extends Controller {
         $res->setPage($this->getPage());
         $res->setPagesize($this->getPageSize());
         $res->setData($items);
-        $res->output();
+        return $res;
 
     }
 
