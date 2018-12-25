@@ -8,6 +8,7 @@
 namespace app\demo\tests;
 use app\admin\service\AdminService;
 use herosphp\core\Loader;
+use herosphp\string\StringUtils;
 
 class DemoTest extends \PHPUnit_Framework_TestCase
 {
@@ -49,5 +50,12 @@ class DemoTest extends \PHPUnit_Framework_TestCase
         $model = Loader::service(AdminService::class);
         $users = $model->fields('id, username')->where('username', 'CONTAIN', 'admin')->find();
         var_dump($users);
+    }
+
+    /**
+     * @test
+     */
+    public function test() {
+        tprintOk(StringUtils::genGlobalUid());
     }
 }

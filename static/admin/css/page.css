@@ -1,4 +1,6 @@
 body {
   padding: 20px; }
+  body .td-compact {
+    padding: 0.5rem; }
 
 /*# sourceMappingURL=page.css.map */

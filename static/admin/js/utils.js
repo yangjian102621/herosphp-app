@@ -9,7 +9,7 @@ function httpGet(url, data, success, fail) {
 
 	if (isObject(data)) { //传入了 data 参数
 		url = buildQueryUrl(url, data);
-	} else { // 没有传入 data 参数
+	} else if(data) { // 没有传入 data 参数
 		fail = success;
 		success = data;
 	}
@@ -73,10 +73,6 @@ function request(url, method, async, data, success, fail) {
 		type: method,
 		url: url,
 		async: async,
-		headers: {
-			appId: "016726a0f24a0001a0",
-			apiKey: "dfb28a624f0b4e2e2b45b1eddc81c3f0",
-		},
 		data: data,
 		success: function(result) {
 			if (result.code == "000") {

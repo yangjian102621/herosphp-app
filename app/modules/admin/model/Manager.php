@@ -7,7 +7,7 @@
 
 namespace app\admin\model;
 
-class Admin
+class Manager
 {
 
     protected $id; //ID
@@ -18,10 +18,11 @@ class Admin
     protected $salt; //密码盐
     protected $addTime; //添加时间
     protected $updateTime; //更新时间
-    protected $enable; //启用状态， 0：禁用，1：启用
+    protected $status; //启用状态， 0：禁用，1：启用
     protected $lastLoginIp; //最后登录 IP
     protected $lastLoginTime; //最后登录时间
     protected $permissions; //用户权限
+    protected $super = false; // 是否超级管理员
 
     /**
      * @return mixed
@@ -154,17 +155,17 @@ class Admin
     /**
      * @return mixed
      */
-    public function getEnable()
+    public function getStatus()
     {
-        return $this->enable;
+        return $this->status;
     }
 
     /**
-     * @param mixed $enable
+     * @param mixed $status
      */
-    public function setEnable($enable)
+    public function setStatus($status)
     {
-        $this->enable = $enable;
+        $this->status = $status;
     }
 
     /**
@@ -222,6 +223,22 @@ class Admin
      */
     public function hasPermission($opt) {
         return isset($this->permissions[$opt]);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSuper()
+    {
+        return $this->super;
+    }
+
+    /**
+     * @param boolean $super
+     */
+    public function setSuper($super)
+    {
+        $this->super = $super;
     }
 
 }

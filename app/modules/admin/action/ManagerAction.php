@@ -1,11 +1,10 @@
 <?php
 namespace app\admin\action;
 
+use app\admin\service\ManagerService;
 use app\admin\utils\Lang;
 use herosphp\core\Loader;
 use herosphp\http\HttpRequest;
-use app\admin\service\AdminService;
-use app\admin\service\AdminRoleService;
 use herosphp\string\StringUtils;
 use herosphp\utils\JsonResult;
 
@@ -15,31 +14,14 @@ use herosphp\utils\JsonResult;
  */
 class ManagerAction extends CommonAction {
 
-    protected $serviceClass = AdminService::class;
-
-    protected $actionTitle = "管理员";
+    protected $serviceClass = ManagerService::class;
 
     /**
      * 列表
      * @param HttpRequest $request
      */
-    public function index(HttpRequest $request) {
-
-        parent::index($request);
-        $this->setOpt($this->actionTitle.'列表');
+    public function index() {
         $this->setView("manager/manager-list");
-
-    }
-
-    /**
-     * 获取管理员数据列表
-     * @param HttpRequest $request
-     * @return void
-     */
-    public function list(HttpRequest $request) {
-
-        $result = parent::list($request);
-        $result->output();
 
     }
 

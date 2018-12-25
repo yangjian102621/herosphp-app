@@ -7,7 +7,7 @@ if (!String.prototype.trim) {
 		return this.replace(/^\s+|\s+$/, '');
 	}
 }
-let Validator = function () {
+var Validator = function () {
 
 	// 验证规则
 	const pattern = {
@@ -62,16 +62,16 @@ let Validator = function () {
 		id : function (value) {
 			if (value.length != 18) return false;
 			//加权因子
-			let wi = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
+			var wi = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
 			//校验码对应值
-			let vi = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2];
-			let ai = new Array(17);
-			let sum = 0;
-			let remaining, verifyNum;
+			var vi = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2];
+			var ai = new Array(17);
+			var sum = 0;
+			var remaining, verifyNum;
 
-			for (let i = 0; i < 17; i++) ai[i] = parseInt(value.substring(i, i + 1));
+			for (var i = 0; i < 17; i++) ai[i] = parseInt(value.substring(i, i + 1));
 
-			for (let m = 0; m < ai.length; m++) sum = sum + wi[m] * ai[m];
+			for (var m = 0; m < ai.length; m++) sum = sum + wi[m] * ai[m];
 
 			remaining = sum % 11;
 			if (remaining == 2) verifyNum = "X";
@@ -90,9 +90,9 @@ let Validator = function () {
 	 * @param ruleStr 规则字符串，多个规则之间用 | 隔开
 	 */
 	Validator.prototype.validate = function (value, ruleStr) {
-		let rules = ruleStr.split("|");
-		let ret = true;
-		for(let x in rules) {
+		var rules = ruleStr.split("|");
+		var ret = true;
+		for(var x in rules) {
 			ret = ret && pattern[rules[x]](value);
 		}
 		this.success = this.success && ret;
@@ -110,9 +110,9 @@ let Validator = function () {
 	 */
 	Validator.prototype.passwordRank = function (value) {
 		if ( value.length <= 5 ) return 0;
-		let mode = 0;
+		var mode = 0;
 		//获取该字符串的所有组成模式
-		for ( let i = 0; i < str.length; i++ ) {
+		for ( var i = 0; i < str.length; i++ ) {
 			mode |= charMode(str.charCodeAt(i));
 		}
 		return getModeNum(mode);
@@ -144,8 +144,8 @@ let Validator = function () {
 	 * 00000001
 	 */
 	function getModeNum( number ) {
-		let modes = 0;
-		for ( let i = 0; i < 4; i++ ) {
+		var modes = 0;
+		for ( var i = 0; i < 4; i++ ) {
 			if ( number & 1 ) modes++;
 			number>>>=1;    //向右移动一位
 		}

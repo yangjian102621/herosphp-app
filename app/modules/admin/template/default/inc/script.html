@@ -1,11 +1,25 @@
 {res:js admin/js/jquery.min.js}
 {res:js admin/js/popper.min.js}
 {res:js admin/js/bootstrap.min.js}
-
+{res:js admin/js/bootstrap-page-handler.js}
+{res:js admin/js/utils.js}
+{res:js admin/js/validator.js}
+{res:js admin/js/vue.min.js}
+{res:js admin/js/jdialog/JDialog.min.js}
+{res:js admin/js/main.js}
 <script>
 	/* === pre-loader init === */
 	$(window).on("load", function() {
 		$('#st-preloader').fadeOut();
 		$('.st-preloader-circle').delay(350).fadeOut('slow');
+	});
+
+	// 初始化全选事件
+	$('#select-all').change(function() {
+		if (this.checked) {
+			$('#data-list-form input[name="ids[]"]').prop("checked", true);
+		} else {
+			$('#data-list-form input[name="ids[]"]').prop("checked", false);
+		}
 	});
 </script>

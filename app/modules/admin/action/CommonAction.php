@@ -1,9 +1,8 @@
 <?php
 namespace app\admin\action;
 
-use app\admin\model\Admin;
-use app\admin\service\AdminMenuService;
-use app\admin\service\AdminService;
+use app\admin\model\Manager;
+use app\admin\service\ManagerService;
 use app\admin\utils\Lang;
 use herosphp\core\Controller;
 use herosphp\core\Loader;
@@ -44,21 +43,18 @@ abstract class CommonAction extends Controller {
      */
     protected $service;
 
-    // 操作名称
-    protected $actionTitle;
-
     public function __construct()
     {
         parent::__construct();
         $request = WebApplication::getInstance()->getHttpRequest();
 
         //获取当前登陆管理员
-        $adminService = Loader::service(AdminService::class);
-        $loginUser = $adminService->getLoginManager();
+        $managerService = Loader::service(ManagerService::class);
+        $loginUser = $managerService->getLoginManager();
 //        if (!$loginUser) {
 //            location("/admin/login/index");
 //        }
-        $this->loginUser = ModelTransformUtils::map2Model(Admin::class, $loginUser);
+        $this->loginUser = ModelTransformUtils::map2Model(Manager::class, $loginUser);
         $this->assign('loginUser', $this->loginUser);
 
         if ($this->serviceClass != null) {
@@ -76,29 +72,6 @@ abstract class CommonAction extends Controller {
         $this->assign('deletes_url',"/{$module}/{$action}/deletes");
         $this->assign("noRecords", Lang::NO_RECOEDS);
 
-        //加载菜单
-        $this->loadLeftMenu();
-    }
-
-    /**
-     * @param HttpRequest $request
-     * 首页列表
-     */
-    public function index(HttpRequest $request) {
-        $this->page = $request->getParameter('page', 'intval');
-        if ( $this->page <=0 ) {
-            $this->page = 1;
-        }
-        if (empty($this->service)) {
-            $this->service = Loader::service($this->serviceClass);
-        }
-
-        $sqlBuilder = $this->service->getSqlBuilder();
-        $items = $this->service->page($this->getPage(), $this->getPagesize())->order($this->getOrder())->find();
-        $this->service->getModelDao()->setSqlBuilder($sqlBuilder);
-        $total = $this->service->setSqlBuilder($sqlBuilder)->count();
-        $this->PageView($total);
-        $this->assign('items', $items);
     }
 
     /**
@@ -106,15 +79,12 @@ abstract class CommonAction extends Controller {
      * @param HttpRequest $request
      * @return JsonResult
      */
-    public function list(HttpRequest $request) {
+    public function clist(HttpRequest $request) {
 
-        $page = $request->getIntParam("page");
-        $pageSize = $request->getIntParam("pagesize");
-        $this->setPage($page);
+        $pageNo = $request->getIntParam("pageNo");
+        $pageSize = $request->getIntParam("pageSize");
+        $this->setPage($pageNo);
         $this->setPageSize($pageSize);
-        if (empty($this->service)) {
-            $this->service = Loader::service($this->serviceClass);
-        }
 
         $sqlBuilder = $this->service->getSqlBuilder();
         $items = $this->service->page($this->getPage(), $this->getPagesize())->order($this->getOrder())->find();
@@ -123,177 +93,119 @@ abstract class CommonAction extends Controller {
         $res->setCount($total);
         $res->setPage($this->getPage());
         $res->setPagesize($this->getPageSize());
-        $res->setItems($items);
-        return $res;
+        $res->setData($items);
+        $res->output();
 
     }
 
     /**
-     * 分页
-     * @param $total
-     * @param $pagesize
-     * @param $page
-     */
-    protected function PageView($total){
-
-        //初始化分页类
-        $pageHandler = new Page($total, $this->getPagesize(), $this->getPage(), 3);
-        //获取分页数据
-        $pageData = $pageHandler->getPageData(DEFAULT_PAGE_STYLE);
-        //组合分页HTML代码
-        if ( $pageData ) {
-            $pageMenu = '<ul class="am-pagination tpl-pagination">';
-            $pageMenu .= '<li><a href="'.$pageData['first'].'">首页</a></li>';
-            $pageMenu .= '<li><a href="'.$pageData['prev'].'">上一页</a></li> ';
-            foreach ( $pageData['list'] as $key => $value ) {
-                if ( $key == $this->page ) {
-                    $pageMenu .= '<li class="am-active"><a href="#">'.$key.'</a></li> ';
-                } else {
-                    $pageMenu .= '<li><a href="'.$value.'">'.$key.'</a></li> ';
-                }
-            }
-            $pageMenu .= '<li><a href="'.$pageData['next'].'">下一页</a></li> ';
-            $pageMenu .= '<li><a href="'.$pageData['last'].'">末页</a></li>';
-            $pageMenu .= '<li class="am-disabled page-count">总共'.ceil($pageData['total']/$this->pageSize).'页</li>';
-            $pageMenu .= '</ul>';
-        }
-        $this->assign('pageMenu', $pageMenu);
-    }
-
-    /**
+     * 获取一条数据
      * @param HttpRequest $request
-     * 编辑数据
      */
-    protected function _edit(HttpRequest $request) {
+    protected function _get(HttpRequest $request) {
         $id = $request->getParameter('id', 'trim');
-        if (empty($id)) {
-            JsonResult::fail(Lang::NO_RECOEDS);
-        } else {
-            $item = $this->service->findById($id);
-            $this->assign('item', $item);
-        }
+        $item = $this->service->findById($id);
+        $this->assign('item', $item);
     }
 
     /**
      * 添加数据
      * @param $data
-     * @param $callback
+     * @return JsonResult
      */
-    protected function _insert($data, $callback) {
+    protected function _insert(array $data) {
 
-        $data['addtime'] = date("Y-m-d H:i:s");
-        $data['updatetime'] = date("Y-m-d H:i:s");
-        if ($this->service->add($data)) {
-            if (!is_null($callback)) {
-                call_user_func($callback, $this->service);
-            }
-            JsonResult::success(Lang::INSERT_SUCCESS);
-        } else {
+        $data['create_time'] = Carbon::now()->toDateTimeString();
+        $data['update_time'] = $data['create_time'];
+        $res = new JsonResult(JsonResult::CODE_SUCCESS, Lang::INSERT_SUCCESS);
+        if (!$this->service->add($data)) {
+            $res->setCode(JsonResult::CODE_FAIL);
             $message = WebApplication::getInstance()->getAppError()->getMessage();
-            JsonResult::fail(empty($message) ? Lang::INSERT_FAIL : $message);
+            $res->setMessage(empty($message) ? Lang::INSERT_FAIL : $message);
         }
+        return $res;
     }
 
     /**
      * 更新数据
      * @param array $data
      * @param $id
-     * @param $callback
+     * @return JsonResult
      */
-    protected function _update(array $data, $id, $callback) {
+    protected function _update(array $data, $id) {
+
+        $res = new JsonResult(JsonResult::CODE_SUCCESS, Lang::UPDATE_SUCCESS);
         if (empty($id)) {
-            JsonResult::fail(Lang::NO_RECOEDS);
+            $res->setCode(JsonResult::CODE_FAIL);
+            $res->setMessage(Lang::NO_RECOEDS);
         }
-        $data['updatetime'] = date('Y-m-d H:i:s');
-        if ($this->service->update($data, $id)) {
-            if (!is_null($callback)) {
-                call_user_func($callback, $this->service);
-            }
-            JsonResult::success(Lang::UPDATE_SUCCESS);
-        } else {
+        $data['update_time'] = Carbon::now()->toDateTimeString();
+        if (!$this->service->update($data, $id)) {
+            $res->setCode(JsonResult::CODE_FAIL);
             $message = WebApplication::getInstance()->getAppError()->getMessage();
-            JsonResult::fail(empty($message) ? Lang::UPDATE_FAIL : $message);
+            $res->setMessage(empty($message) ? Lang::UPDATE_FAIL : $message);
         }
+        return $res;
     }
 
     /**
-     * 启用|禁用 操作
+     * 更改字段状态
      * @param HttpRequest $request
+     * @return JsonResult
      */
-    public function enable(HttpRequest $request, $callback) {
+    public function changeStatus( HttpRequest $request) {
+
         $id = $request->getParameter('id', 'trim');
-        $enable = $request->getParameter('enable');
+        $status = $request->getParameter('status', 'intval');
         if (empty($id)) {
-            JsonResult::fail(Lang::OPT_FAIL);
+            JsonResult::fail(Lang::INVAID_PARAMS);
         }
-        if ($this->service->set('enable', $enable, $id)) {
-
-            if (!is_null($callback)) {
-                call_user_func($callback, $this->service);
-            }
-
-            JsonResult::success(Lang::OPT_SUCCESS);
-        } else {
-            JsonResult::fail(Lang::OPT_FAIL);
+        $res = new JsonResult(JsonResult::CODE_SUCCESS, Lang::OPT_SUCCESS);
+        if (!$this->service->set('status', $status, $id)) {
+            $res->setCode(JsonResult::CODE_FAIL);
+            $res->setMessage(Lang::OPT_FAIL);
         }
-    }
-
-    /**
-     * 设置操作名称
-     * @param $name
-     */
-    protected function setOpt($name){
-        $this->assign('optTitle', $name);
+        return $res;
     }
 
     /**
      * 删除单条数据
      * @param HttpRequest $request
+     * @return JsonResult
      */
-    public function delete( HttpRequest $request, $callback) {
+    public function delete( HttpRequest $request) {
 
-        $id = $request->getParameter('id', 'trim');
+        $id = $request->getStrParam('id');
+        $res = new JsonResult(JsonResult::CODE_SUCCESS, Lang::DELETE_SUCCESS);
         if ( empty($id) ) {
-            JsonResult::fail(Lang::NO_RECOEDS);
+            $res->setCode(JsonResult::CODE_FAIL);
+            $res->setMessage(Lang::NO_RECOEDS);
+            return $res;
         }
-        if ( $this->service->delete($id) ) {
-
-            if (!is_null($callback)) {
-                call_user_func($callback, $this->service);
-            }
-
-            JsonResult::success(Lang::DELETE_SUCCESS);
-        } else {
-            JsonResult::fail(Lang::DELETE_FAIL);
+        if (!$this->service->delete($id)) {
+            $res->setCode(JsonResult::CODE_FAIL);
+            $res->setMessage(Lang::DELETE_FAIL);
         }
+        return $res;
     }
-
-
-    /**
-     * 加载左侧的菜单
-     * 设置最大的菜单200条
-     */
-    protected function loadLeftMenu() {
-        $service = Loader::service(AdminMenuService::class);
-        $items = $service->getMenuCache();
-        $this->assign('adminMenus', $items);
-    }
-
 
     /**
      * 删除多条数据
      * @param HttpRequest $request
+     * @return JsonResult
      */
     public function deletes( HttpRequest $request ) {
+
         $ids = $request->getParameter('ids');
+        $res = new JsonResult(JsonResult::CODE_SUCCESS, Lang::DELETE_SUCCESS);
         if (empty($ids)){
-            JsonResult::fail(Lang::NO_RECOEDS);
+            $res->setCode(JsonResult::CODE_FAIL);
+            $res->setMessage(Lang::NO_RECOEDS);
+        } else if (!$this->service->where("id", "IN", $ids)->deletes()) {
+            $res->setCode(JsonResult::CODE_FAIL);
+            $res->setMessage(Lang::DELETE_FAIL);
         }
-        if ($this->service->deletes($ids)) {
-            JsonResult::success(Lang::DELETE_SUCCESS);
-        } else {
-            JsonResult::fail(Lang::DELETE_FAIL);
-        }
+        return $res;
     }
 
     /**
@@ -303,26 +215,12 @@ abstract class CommonAction extends Controller {
 
         $field = $request->getParameter('field', 'trim');
         $value = $request->getParameter('value', 'trim');
-        if ($this->checkField($field, $value)) {
+        $exists = $this->service->where($field,$value)->findOne();
+        if ($exists) {
             JsonResult::fail();
         } else {
             JsonResult::success();
         }
-    }
-
-    /**
-     * @param $field
-     * @param $value
-     * @return bool
-     * 检验某个字段的值是否在数据库中存在，用于保持某个字段的唯一性
-     */
-    protected function checkField($field, $value) {
-        $value = trim($value);
-        $exists = $this->service->where($field,$value)->findOne();
-        if ( $exists ) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -394,22 +292,5 @@ abstract class CommonAction extends Controller {
     {
         $this->service = $service;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getActionTitle()
-    {
-        return $this->actionTitle;
-    }
-
-    /**
-     * @param mixed $actionTitle
-     */
-    public function setActionTitle($actionTitle)
-    {
-        $this->actionTitle = $actionTitle;
-    }
-
 
 }

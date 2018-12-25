@@ -21,8 +21,7 @@
 
     "require": {
         "herosphp/framework": "*@dev",
-        "qiniu/php-sdk": "^7.2",
-        "phpunit/phpunit": "5.7.23"
+        "qiniu/php-sdk": "^7.2"
     },
 
     "autoload": {

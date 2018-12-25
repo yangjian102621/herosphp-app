@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\service;
-use app\admin\dao\AdminDao;
+use app\admin\dao\ManagerDao;
 use herosphp\core\Loader;
 use herosphp\model\CommonService;
 use herosphp\session\Session;
@@ -11,9 +11,9 @@ use herosphp\string\StringUtils;
  * ----------------
  * @author yangjian<yangjian102621@gmail.com>
  */
-class AdminService extends CommonService {
+class ManagerService extends CommonService {
 
-    protected $modelClassName = AdminDao::class;
+    protected $modelClassName = ManagerDao::class;
 
     // 用户登录 session key
     const LOGIN_USER_SESSION_KEY = 'LOGIN_USER_SESSION_KEY';

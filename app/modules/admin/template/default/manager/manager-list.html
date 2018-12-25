@@ -14,7 +14,7 @@
 <div class="container-fluid">
 
 	<div class="row">
-		<div class="table-responsive">
+		<form class="table-responsive" id="data-list-form">
 			<table class="table table-bordered table-hover">
 				<thead class="bg-light">
 				<tr>
@@ -24,59 +24,39 @@
 							<label class="custom-control-label" for="select-all"></label>
 						</div>
 					</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
-					<th scope="col">Heading</th>
+					<th scope="col">用户名</th>
+					<th scope="col">姓名</th>
+					<th scope="col">添加时间</th>
+					<th scope="col">最后登录 IP</th>
+					<th scope="col">最后登录时间</th>
+					<th scope="col">操作</th>
 				</tr>
 				</thead>
 				<tbody>
-				{for ($i=0;$i<12;$i++)}
-				<tr>
+				<tr v-for="item in list">
 					<th scope="row">
 						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="{$i}">
-							<label class="custom-control-label" for="{$i}"></label>
+							<input type="checkbox" class="custom-control-input" name="ids[]" id="{{ item.id }}">
+							<label class="custom-control-label" for="{{ item.id }}"></label>
 						</div>
 					</th>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
-					<td>Cell</td>
+					<td>{{ item.username }}</td>
+					<td>{{ item.name }}</td>
+					<td>{{ item.add_time }}</td>
+					<td>{{ item.last_login_ip }}</td>
+					<td>{{ item.last_login_time }}</td>
+					<td class="td-compact">
+						<button type="button" class="btn btn-outline-info btn-sm">编辑</button>
+						<button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+					</td>
 				</tr>
-				{/for}
 				</tbody>
 			</table>
 
-		</div>
+		</form>
 
-		<div class="table-responsive">
-			<ul class="pagination justify-content-end">
-				<li class="page-item disabled">
-					<span class="page-link">Previous</span>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item active">
-					<span class="page-link">2</span>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#">4</a></li>
-				<li class="page-item"><a class="page-link" href="#">5</a></li>
-				<li class="page-item">
-					<a class="page-link" href="#">Next</a>
-				</li>
-			</ul>
-		</div>
+		<!-- 分页样式 -->
+		<div class="table-responsive" id="page"></div>
 	</div>
 
 </div>
@@ -84,6 +64,38 @@
 {include admin.inc.script}
 <script>
 
+	var APP = new Vue({
+		el: '#data-list-form',
+		data: {
+			url: "/admin/manager/clist",
+			list: null
+		},
+		created: function() {
+			// 加载数据
+			this.fetchData(this.url);
+		},
+		methods: {
+
+			// 加载数据列表
+			fetchData: function(url, params) {
+				httpGet(url, params, function(res) {
+					APP.$data.list = res.data;
+				}, function() {
+					messageError("加载数据失败！");
+				})
+			}
+		}
+	});
+	$('#page').pageHandler({
+		total: 100,
+		bool: '{$bool}',
+		pageNo: 1,
+		pageSize: 12,
+		align: 'center',
+		changePage: function(pageNo, pageSize) {
+			APP.fetchData(APP.$data.url, {pageNo: pageNo, pageSize: pageSize});
+		}
+	});
 </script>
 </body>
 </html>
