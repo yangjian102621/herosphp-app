@@ -182,9 +182,11 @@ abstract class CommonAction extends Controller {
             $res->setMessage(Lang::NO_RECOEDS);
             return $res;
         }
+        $this->service->beginTransaction();
         if (!$this->service->delete($id)) {
             $res->setCode(JsonResult::CODE_FAIL);
             $res->setMessage(Lang::DELETE_FAIL);
+            $this->service->rollback();
         }
         return $res;
     }

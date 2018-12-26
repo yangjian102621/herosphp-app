@@ -1,3 +1,16 @@
+Array.prototype._indexOf = function(val, comparator) {
+	for (var i = 0; i < this.length; i++) {
+		if (comparator(this[i], val)) return i;
+	}
+	return -1;
+};
+// 删除数组中某个元素
+Array.prototype._remove = function(val, comparator) {
+	var index = this._indexOf(val, comparator);
+	if (index > -1) {
+		this.splice(index, 1);
+	}
+};
 /**
  * 发送异步 http GET 请求
  * @param url

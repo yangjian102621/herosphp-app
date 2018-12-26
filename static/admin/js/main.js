@@ -14,11 +14,28 @@ $(document).ready(function() {
 		}
 	});
 
-
+	$.fn.extend({
+		// add button loading extension
+		jbutton: function(flag) {
+			if (flag == "loading") {
+				$(this).addClass("btn-disabled");
+				$(this).prop("disabled", true);
+				var text = $(this).text();
+				$(this).data("text", text);
+				var loadingText = $(this).attr("data-loading-text") || "正在提交...";
+				$(this).text(loadingText);
+			} else if(flag == "reset") {
+				var text = $(this).data("text");
+				$(this).prop("disabled", false);
+				$(this).removeClass("btn-disabled");
+				$(this).text(text);
+			}
+		},
+	});
 });
 
 // 删除一条数据
-function removeItem(item, callback) {
+function removeItem(url, item, callback) {
 
 	JDialog.confirm({
 		title : "删除提示",
@@ -32,11 +49,18 @@ function removeItem(item, callback) {
 		effect : 'zoomIn',
 		button : {
 			'确认' : function(dialog) {
-				dialog.lock();
+				dialog.close();
+				var loading = messageLoading(1);
 				setTimeout(function() {
-					messageOk("删除成功.");
-					dialog.close();
-				}, 2000)
+					httpGet(url, {id: item.id}, function() {
+						callback();
+						loading.hide();
+						messageOk("删除成功.");
+					}, function() {
+						loading.hide();
+						messageError("删除失败.")
+					});
+				}, 500);
 			},
 			'取消' : function(dialog) {
 				dialog.close();

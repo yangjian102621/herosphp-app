@@ -88,15 +88,6 @@ class ManagerAction extends CommonAction {
     }
 
     /**
-     * 加载角色
-     */
-    protected function loadRoles() {
-        $service = Loader::service(AdminRoleService::class);
-        $roles = $service->find();
-        $this->assign('roles', $roles);
-    }
-
-    /**
      * 修改密码
      * @param HttpRequest $request
      */
@@ -119,5 +110,15 @@ class ManagerAction extends CommonAction {
             JsonResult::fail(Lang::MD_PASS_FAIL);
         }
 
+    }
+
+    /**
+     * 删除数据
+     * @param HttpRequest $request
+     * @return JsonResult|void
+     */
+    public function delete(HttpRequest $request)
+    {
+        parent::delete($request)->output();
     }
 }

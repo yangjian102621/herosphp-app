@@ -46,14 +46,55 @@ $.fn.extend({
 			$pageLink.append($prevIcon);
 			$pagePrev.append($pageLink);
 			$pageUL.append($pagePrev);
+			// 提取要输出的页码
+			var pages = [], p = options.outputNum * 2 + 1;
+			if (pageNo > 1) {
+				pages.push(1);
+			}
+			if (totalPage <= p) {
+				for(var j = 2; j < p; j++) {
+					pages.push(j);
+				}
+			}
+
+			if (pageNo > options.outputNum) {
+				if (pageNo > options.outputNum + 1) {
+					pages.push('dot'); // 加入占位符
+				}
+				for (var j = pageNo - options.outputNum; j < pageNo; j++) {
+					if (j == 1) continue;
+					pages.push(j);
+				}
+			} else {
+				for (var j = 2; j < pageNo; j++) {
+					pages.push(j);
+				}
+			}
+			if (totalPage >= pageNo + options.outputNum) {
+				for (var j = pageNo; j <= pageNo + options.outputNum; j++) {
+					if (j == totalPage) continue;
+					pages.push(j);
+				}
+			}
+			if (pageNo < totalPage - options.outputNum) {
+				pages.push('dot'); // 加入占位符
+			}
+			pages.push(totalPage);
 			// 输出页码
-			for (var i = 1; i <= totalPage; i++) {
+			for (var i = 0; i < pages.length; i++) {
+				var k = pages[i];
 				var $li = $('<li class="page-item"></li>'), $link;
-				if (i == pageNo) { // 当前页码
+				if (k == 'dot') {
+					$li.addClass('disabled');
+					$li.append('<span class="page-link"><em class="oi oi-ellipses"></em></span>');
+					$pageUL.append($li);
+					continue;
+				}
+				if (k == pageNo) { // 当前页码
 					$li.addClass('active');
-					$link = $('<span class="page-link">'+i+'</span>');
+					$link = $('<span class="page-link">'+k+'</span>');
 				} else {
-					$link = $('<a class="page-link" href="javascript:void(0);" data-page="'+i+'">'+i+'</a>');
+					$link = $('<a class="page-link" href="javascript:void(0);" data-page="'+k+'">'+k+'</a>');
 					$link.click(function() {
 						var _pageNo = parseInt($(this).attr('data-page'));
 						options.changePage(_pageNo, options.pageSize);
