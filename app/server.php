@@ -1,13 +1,19 @@
 <?php
 /**
- * 通用入口文件
- * @author yangjian
- * @since v3.0.0
+ * * ---------------------------------------------------------------------
+ * 通用入口文件（开发环境）
+ * @author yangjian102621@gmail.com
+ * ---------------------------------------------------------------------
+ * Copyright (c) 2013-now http://www.r9it.com All rights reserved.
+ * Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+ * ---------------------------------------------------------------------
  */
 //设置页面编码
 header("Content-Type:text/html; charset=utf-8");
 // 开启调试模式 建议开发阶段开启 部署阶段注释或者设为false
 define('APP_DEBUG', true);
+// 是否记录 sql 日志
+define('SQL_LOG', true);
 //定义时区
 define('TIME_ZONE', 'PRC');
 define('APP_NAME', 'app');
