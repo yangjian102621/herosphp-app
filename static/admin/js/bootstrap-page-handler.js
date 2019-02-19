@@ -18,6 +18,7 @@ $.fn.extend({
 		// 计算总页数
 		var totalPage = Math.ceil(options.total/options.pageSize);
 		if (totalPage <= 1) { // 少于一页
+			$(this).empty();
 			return;
 		}
 		var root = this;
@@ -48,38 +49,42 @@ $.fn.extend({
 			$pageUL.append($pagePrev);
 			// 提取要输出的页码
 			var pages = [], p = options.outputNum * 2 + 1;
-			if (pageNo > 1) {
-				pages.push(1);
-			}
-			if (totalPage <= p) {
-				for(var j = 2; j < p; j++) {
-					pages.push(j);
-				}
-			}
-
-			if (pageNo > options.outputNum) {
-				if (pageNo > options.outputNum + 1) {
-					pages.push('dot'); // 加入占位符
-				}
-				for (var j = pageNo - options.outputNum; j < pageNo; j++) {
-					if (j == 1) continue;
-					pages.push(j);
+			if (totalPage <= p) { // output all pages
+				for (var i = 1; i <= totalPage; i++) {
+					pages.push(i);
 				}
 			} else {
-				for (var j = 2; j < pageNo; j++) {
-					pages.push(j);
+				if (pageNo > 1) { // output first page
+					pages.push(1);
 				}
-			}
-			if (totalPage >= pageNo + options.outputNum) {
-				for (var j = pageNo; j <= pageNo + options.outputNum; j++) {
-					if (j == totalPage) continue;
-					pages.push(j);
+				// output left handle of pagination
+				if (pageNo > options.outputNum) {
+					if (pageNo > options.outputNum + 2) {
+						pages.push('dot'); // 加入占位符
+					}
+					for (var j = pageNo - options.outputNum; j < pageNo; j++) {
+						if (j == 1) continue;
+						pages.push(j);
+					}
+				} else {
+					for (var j = 2; j < pageNo; j++) {
+						pages.push(j);
+					}
 				}
+				// output the right handle of pagination
+				if (totalPage > pageNo + options.outputNum+1) {
+					for (var j = pageNo; j <= pageNo + options.outputNum; j++) {
+						pages.push(j);
+					}
+					pages.push('dot'); // 加入占位符
+				} else {
+					for (var j = pageNo; j < totalPage; j++) {
+						pages.push(j);
+					}
+				}
+				pages.push(totalPage);
 			}
-			if (pageNo < totalPage - options.outputNum) {
-				pages.push('dot'); // 加入占位符
-			}
-			pages.push(totalPage);
+
 			// 输出页码
 			for (var i = 0; i < pages.length; i++) {
 				var k = pages[i];
