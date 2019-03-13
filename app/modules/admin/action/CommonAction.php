@@ -86,7 +86,7 @@ abstract class CommonAction extends Controller {
         $this->setPage($pageNo);
         $this->setPageSize($pageSize);
 
-        $sqlBuilder = $this->service->getSqlBuilder();
+        $sqlBuilder = clone $this->service->getSqlBuilder();
         $items = $this->service->page($this->getPage(), $this->getPagesize())->order($this->getOrder())->find();
         $total = $this->service->setSqlBuilder($sqlBuilder)->count();
         $res = new JsonResult(JsonResult::CODE_SUCCESS, "数据获取成功.");
