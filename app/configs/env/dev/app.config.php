@@ -62,8 +62,8 @@ $config = array(
     'qiniu_upload_configs' => [
         "ACCESS_KEY" => "_-BMslq1mPL_zY0KN2iLD1-ym4TcHhQUi0_dDFPB",
         "SECRET_KEY" => "J_As9ApfpyCpk31l3hOAZe3QQTc8iYlEfdd6-5an",
-        "BUCKET" => "herosphp",
-        "BUCKET_DOMAIN" => "http://oxy1ihdnt.bkt.clouddn.com/",
+        "BUCKET" => "test",
+        "BUCKET_DOMAIN" => "http://test.img.r9it.com/",
     ],
 
 );

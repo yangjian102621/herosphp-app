@@ -8,7 +8,11 @@
 namespace app\demo\tests;
 use app\admin\service\AdminService;
 use herosphp\core\Loader;
+use herosphp\files\FileUtils;
 use herosphp\string\StringUtils;
+use herosphp\utils\JsonResult;
+use Qiniu\Auth;
+use Qiniu\Storage\UploadManager;
 
 class DemoTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,9 +57,45 @@ class DemoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * 使用七牛进行文件上传
      * @test
      */
-    public function test() {
-        tprintOk(StringUtils::genGlobalUid());
+    public function upload() {
+        // 初始化 UploadManager 对象并进行文件的上传。
+        $upConfigs = getConfig('qiniu_upload_configs');
+        $uploadMgr = new UploadManager();
+        // 构建鉴权对象
+        $auth = new Auth($upConfigs['ACCESS_KEY'], $upConfigs['SECRET_KEY']);
+        // 生成上传 Token
+        $token = $auth->uploadToken($upConfigs['BUCKET']);
+
+        $filePath = "/home/yangjian/ipfs/data/data-1MB.zip";
+
+        // 上传到七牛后保存的文件名
+        $key = basename($filePath);
+
+        $start = timer();
+        // 调用 UploadManager 的 putFile 方法进行文件的上传。
+        list($ret, $err) = $uploadMgr->putFile($token, $key, $filePath);
+        if ($err !== null) {
+            tprintError("文件上传失败：{$err->message()}");
+        } else {
+            $cost = timer() - $start;
+            tprintOk("文件上传成功：".$upConfigs['BUCKET_DOMAIN'] . $ret['key'].", cost: {$cost} secs");
+        }
+    }
+
+    /**
+     * 使用 IPFS 进行文件上传
+     * @test
+     */
+    public function uploadIPFS() {
+
+        $start = timer();
+        $filePath = "/home/yangjian/ipfs/data/data-1MB.zip";
+        $ipfs = new IPFS("120.76.197.135", "8080", "5001");
+        $hash = $ipfs->add($filePath);
+        $cost = timer() - $start;
+        tprintOk("文件上传成功：".$hash.", cost: {$cost} secs");
     }
 }
