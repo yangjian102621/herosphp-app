@@ -93,7 +93,7 @@ class DemoTest extends \PHPUnit_Framework_TestCase
 
         $start = timer();
         $filePath = "/home/yangjian/ipfs/data/data-1MB.zip";
-        $ipfs = new IPFS("120.76.197.135", "8080", "5001");
+        $ipfs = new IPFS("120.76.197.135", "8090", "5001");
         $hash = $ipfs->add($filePath);
         $cost = timer() - $start;
         tprintOk("文件上传成功：".$hash.", cost: {$cost} secs");
