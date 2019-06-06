@@ -36,6 +36,7 @@ class IPFS
     {
         $query_vars = [
             'pin' => ($pin ? 'true' : 'false'),
+            'username' => 'xiaoyang333'
         ];
         $response = $this->postFile("/api/v0/add", $filepath, $query_vars);
         return $response['Hash'];
