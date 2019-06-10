@@ -179,12 +179,12 @@ class IPFS
         if ($code_category == '5' OR $code_category == '4') {
             $data = @json_decode($output, true);
             if (!$data AND json_last_error() != JSON_ERROR_NONE) {
-                throw new Exception("IPFS returned response code $response_code: ".substr($output, 0, 200),
+                throw new Exception("IPFS returned response code $response_code : ".substr($output, 0, 200),
                     $response_code);
             }
             if (is_array($data)) {
                 if (isset($data['Code']) AND isset($data['Message'])) {
-                    throw new Exception("IPFS Error {$data['Code']}: {$data['Message']}", $response_code);
+                    throw new Exception("IPFS Error {$data['Code']} : {$data['Message']}", $response_code);
                 }
             }
         }
