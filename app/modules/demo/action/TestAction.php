@@ -10,7 +10,7 @@ use herosphp\http\HttpRequest;
  * @since           2015-01-28
  * @author          yangjian<yangjian102621@gmail.com>
  */
-class BeanAction extends Controller {
+class TestAction extends Controller {
 
     /**
      * 首页方法
@@ -18,11 +18,8 @@ class BeanAction extends Controller {
      */
     public function index( HttpRequest $request ) {
 
-
-        $userService = Beans::get("api.user.service");
-        echo($userService->login());
+        __print($request->getParameters());
         die();
-
     }
   
 }
