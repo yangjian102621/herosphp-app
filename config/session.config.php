@@ -3,6 +3,7 @@
 // redis session configs
 
 use Workerman\Protocols\Http\Session\FileSessionHandler;
+use Workerman\Protocols\Http\Session\RedisSessionHandler;
 
 return [
   'session_name' => 'heros-sess-token',
@@ -18,6 +19,7 @@ return [
   // session handler config
   'handler_class' => FileSessionHandler::class,
   'handler_config' => null,
+  //'handler_class' => RedisSessionHandler::class,
   // 'handler_config' => [
   //   'host' => '127.0.0.1', // Required
   //   'port' => 6379,        // Required
