@@ -7,5 +7,6 @@
 runtime
 /composer.lock
 /vendor
-static/upload
-static/common/NKeditor/uploads
+res/upload
+.php-cs-fixer.cache
+build/
