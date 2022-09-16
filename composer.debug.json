@@ -17,6 +17,7 @@
     ],
     "require": {
         "herosphp/framework": "*@dev",
+        "herosphp/storage": "*@dev",
         "nikic/fast-route": "^1.3"
     },
     "autoload": {
@@ -36,7 +37,12 @@
         {
             "type": "path",
             "url": "/php/herosphp"
-        }
+       },
+
+		{
+			"type": "path",
+			"url": "/php/herosphp-storage"
+		}
     ],
     "scripts": {
         "post-install-cmd": "script\\Installer::install"
