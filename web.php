@@ -8,9 +8,8 @@ use herosphp\WebApp;
 use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
 
-require 'boot.php';
-
-require 'Monitor.php';
+require './boot.php';
+require './Monitor.php';
 
 define('RUN_WEB_MODE', true);
 
