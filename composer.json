@@ -1,6 +1,6 @@
 {
     "name": "herosphp/app",
-    "description": "a lightweight PHP development framework - herosphp Framework",
+    "description": "skeleton project for herosphp framework",
     "type": "project",
     "keywords": [
         "php framework",
@@ -16,8 +16,7 @@
         }
     ],
     "require": {
-        "herosphp/framework": "^4.0",
-        "nikic/fast-route": "^1.3"
+        "herosphp/framework": "^4.0"
     },
     "autoload": {
         "psr-4": {
