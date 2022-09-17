@@ -1,0 +1,37 @@
+{
+    "name": "herosphp/app",
+    "description": "skeleton project for herosphp framework",
+    "type": "project",
+    "keywords": [
+        "php framework",
+        "herosphp",
+        "lightweight"
+    ],
+    "homepage": "https://github.com/yangjian102621/herosphp",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "blackfox",
+            "email": "yangjian102621@gmail.com"
+        }
+    ],
+    "require": {
+        "herosphp/framework": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "./app",
+            "script\\": "script/"
+        }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.4"
+    },
+    "minimum-stability": "dev",
+    "suggest": {
+        "ext-event": "For better performance. "
+   },
+    "scripts": {
+        "post-install-cmd": "script\\Installer::install"
+    }
+}

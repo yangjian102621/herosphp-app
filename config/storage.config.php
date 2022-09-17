@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use herosphp\storage\handler\LocalFileHandler;
-use herosUpload\AliOssFileHandler;
-use herosUpload\QiniuFileSaveHandler;
+use herosphp\plugin\storage\handler\LocalFileHandler;
+use herosphp\plugin\storage\handler\AliOssFileHandler;
+use herosphp\plugin\storage\handler\QiniuFileSaveHandler;
 
 return [
     // Allowed file extesion

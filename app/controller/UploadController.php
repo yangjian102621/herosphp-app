@@ -8,9 +8,9 @@ use herosphp\annotation\Post;
 use herosphp\core\BaseController;
 use herosphp\core\HttpRequest;
 use herosphp\core\HttpResponse;
-use herosphp\storage\Storage;
 use herosphp\GF;
-use herosphp\storage\core\Uploader;
+use herosphp\plugin\storage\core\Uploader;
+use herosphp\plugin\storage\Storage;
 
 #[Controller(name: UploadAction::class)]
 class UploadController extends BaseController
@@ -21,6 +21,7 @@ class UploadController extends BaseController
     {
         parent::__init();
 
+        Storage::handler('local'); // 使用本地文件上传
         static::$_uploader = Storage::getUploader();
     }
 
