@@ -20,8 +20,8 @@ return [
         'local' => [
             'class' => LocalFileHandler::class,
             'config' => [
-                'root' => RUNTIME_PATH . 'upload',
-                'url' => '//127.0.0.1:8787'
+                'root' => PUBLIC_PATH . 'upload',
+                'url' => 'http://127.0.0.1:2345/upload/'
             ]
         ],
 
